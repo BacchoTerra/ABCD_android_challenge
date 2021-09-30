@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Android Challenge</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_label_principal">Principal</string>
+    <string name="menu_label_aluno">Aluno</string>
+    <string name="menu_label_informacoes">Informações</string>
+    <string name="menu_label_configuracoes">Configurações</string>
 </resources>
