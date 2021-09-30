@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "428573347619",
+    "project_id": "abcd-android-challenge",
+    "storage_bucket": "abcd-android-challenge.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428573347619:android:1a8c18b48ad5a697518696",
+        "android_client_info": {
+          "package_name": "com.brunobterra.androidchallenge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428573347619-gspqgn2qcqecl184te3bf58ps2f0i604.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.brunobterra.androidchallenge",
+            "certificate_hash": "995108c8628563df2bdb4902a396bbdace3bb1a0"
+          }
+        },
+        {
+          "client_id": "428573347619-385iln775ou4g4efuioemkefnui8r8nj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxI5G993zF_dGDEs61wLrBvG4aKZo_M_o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428573347619-385iln775ou4g4efuioemkefnui8r8nj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
