@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/alunos_nav_graph"
+    app:startDestination="@id/alunosListaFragment">
+    <fragment
+        android:id="@+id/alunosListaFragment"
+        android:name="com.brunobterra.androidchallenge.fragments.AlunosListaFragment"
+        android:label="fragment_alunos_lista"
+        tools:layout="@layout/fragment_alunos_lista" >
+        <action
+            android:id="@+id/action_alunosListaFragment_to_alunosAdicionarFragment"
+            app:destination="@id/alunosAdicionarFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/alunosAdicionarFragment"
+        android:name="com.brunobterra.androidchallenge.fragments.AlunosAdicionarFragment"
+        android:label="fragment_alunos_adicionar"
+        tools:layout="@layout/fragment_alunos_adicionar" />
+</navigation>
