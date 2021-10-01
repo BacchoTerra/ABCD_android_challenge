@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/main_background_color"
+    android:paddingBottom="48dp">
+
+    <TextView
+        android:id="@+id/content_alunos_search_txtSelecionarAluno"
+        style="@style/Theme.AndroidChallenge.HeaderText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/label_selecionar_aluno"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/content_alunos_search_imageFechar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:contentDescription="@string/cd_fechar"
+        android:src="@drawable/ic_baseline_close_24"
+        app:layout_constraintBottom_toBottomOf="@+id/content_alunos_search_txtSelecionarAluno"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/content_alunos_search_txtSelecionarAluno"
+        app:tint="@color/primary_color" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/content_alunos_search_inputLayoutPesquisa"
+        style="@style/Theme.AndroidChallenge.OutlinedTextInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="21dp"
+        app:endIconDrawable="@drawable/ic_icon_lupa"
+        app:endIconMode="custom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/content_alunos_search_txtSelecionarAluno">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/content_alunos_search_editPesquisa"
+            style="@style/Theme.AndroidChallenge.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_label_pesquisar" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/content_alunos_search_txtFiltrarPor"
+        style="@style/Theme.AndroidChallenge.HeaderText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="11dp"
+        android:text="@string/label_filtrar_por"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/content_alunos_search_inputLayoutPesquisa" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="31dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="28dp"
+        android:background="@drawable/shape_tab_filtrar_alunos_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/content_alunos_search_txtFiltrarPor"
+        app:tabIndicator="@drawable/shape_tab_filtrar_alunos_idicator"
+        app:tabIndicatorAnimationMode="elastic"
+        app:tabIndicatorColor="@color/tab_layout_default_indicator_color"
+        app:tabIndicatorGravity="stretch"
+        app:tabMode="fixed"
+        app:tabPadding="0dp"
+        app:tabSelectedTextColor="@color/tab_layout_default_on_indicator_color"
+        app:tabTextAppearance="@style/Theme.AndroidChallenge.TabTextAppearance"
+        app:tabTextColor="@color/tab_layout_default_on_background_color">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_item_label_nome" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_item_label_ano" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

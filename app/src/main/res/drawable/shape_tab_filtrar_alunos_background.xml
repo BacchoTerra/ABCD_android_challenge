@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <corners
+        android:radius="@dimen/tab_default_corner_radius"/>
+
+    <solid
+        android:color="@color/tab_layout_default_background_color"/>
+
+    <stroke
+        android:color="@color/tab_layout_default_stroke_color"
+        android:width="@dimen/tab_default_stroke_width"/>
+</shape>

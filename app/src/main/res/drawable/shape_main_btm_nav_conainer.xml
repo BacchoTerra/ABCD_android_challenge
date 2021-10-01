@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <stroke
+        android:width="@dimen/btm_nav_container_stroke_width"
+        android:color="@color/btm_nav_stroke_color"/>
+
+    <solid
+        android:color="@color/btm_nav_background_color"/>
+
+
+</shape>

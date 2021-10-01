@@ -1,13 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.AlunosAdicionarFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Fragment adidcionar alunos" />
+    <include
+        layout="@layout/content_adicionar_aluno_custom_toolbar"
+        android:id="@+id/fragment_alunos_adicionar_contentCustomToolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-</FrameLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fragment_alunos_adicionar_inputLayoutNome"
+        style="@style/Theme.AndroidChallenge.OutlinedTextInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="66dp"
+        android:layout_marginEnd="32dp"
+        app:endIconDrawable="@drawable/ic_icon_pessoa"
+        app:endIconMode="custom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_alunos_adicionar_contentCustomToolbar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fragment_alunos_adicionar_editNome"
+            style="@style/Theme.AndroidChallenge.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_label_nome" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/fragment_alunos_adicionar_imageAvatar"
+        android:layout_width="161dp"
+        android:layout_height="162dp"
+        android:layout_marginStart="99dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="100dp"
+        android:contentDescription="@string/cd_avatar_selecionado"
+        android:src="@drawable/avatar_sr_goiaba"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_alunos_adicionar_inputLayoutNome" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/fragment_alunos_adicionar_btnMudarAvatar"
+        style="@style/Theme.AndroidChallenge.UnfilledBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="71dp"
+        android:layout_marginTop="15dp"
+        android:textAppearance="@style/Theme.AndroidChallenge.HeaderText1"
+        android:layout_marginEnd="71dp"
+        android:text="@string/btn_label_mudar_avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_alunos_adicionar_imageAvatar" />
+
+    <CheckBox
+        android:id="@+id/fragment_alunos_adicionar_cehckBozAutorizacao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="24dp"
+        android:text="@string/chk_box_label_autoriza_coleta_dados"
+        style="@style/Theme.AndroidChallenge.CheckBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_alunos_adicionar_btnMudarAvatar" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/fragment_alunos_adicionar_btnSalvar"
+        style="@style/Theme.AndroidChallenge.FilledBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="30dp"
+        android:text="@string/btn_label_salvar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_alunos_adicionar_cehckBozAutorizacao" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
