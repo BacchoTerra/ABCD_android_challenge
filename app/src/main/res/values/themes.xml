@@ -44,6 +44,8 @@
 
     </style>
 
+    <style name="Theme.AndroidChallenge.TabTextAppearance" parent="ButtonTextAppearance"/>
+
 
     <style name="Theme.AndroidChallenge.OutlinedTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 

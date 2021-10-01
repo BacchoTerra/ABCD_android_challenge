@@ -81,5 +81,8 @@ dependencies {
     //https://github.com/gauravk95/bubble-navigation
     implementation 'com.gauravk.bubblenavigation:bubblenavigation:1.0.7'
 
+    //https://github.com/Dsiner/TabView
+    implementation 'com.dsiner.lib:tabview:1.0.2'
+
 
 }

@@ -56,6 +56,13 @@
     <color name="fab_tint_color">@color/primary_color</color>
     <color name="fab_icon_tint_color">@color/on_primary_color</color>
 
+    <color name="tab_layout_default_background_color">#FFFFFF</color>
+    <color name="tab_layout_default_stroke_color">#E1E1E1</color>
+    <color name="tab_layout_default_indicator_color">@color/primary_color</color>
+    <color name="tab_layout_default_on_indicator_color">#FFFFFF</color>
+    <color name="tab_layout_default_on_background_color">@color/primary_color</color>
+
+
 
 
 </resources>

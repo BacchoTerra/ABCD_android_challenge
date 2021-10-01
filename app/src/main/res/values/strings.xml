@@ -25,4 +25,6 @@
     <string name="btm_nav_item_label_aluno">Aluno</string>
     <string name="btm_nav_item_label_ajuda">Ajuda</string>
     <string name="btm_nav_item_label_config">Configurações</string>
+    <string name="tab_item_label_nome">Nome</string>
+    <string name="tab_item_label_ano">Ano</string>
 </resources>
