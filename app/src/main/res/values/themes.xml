@@ -12,5 +12,57 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="editTextColor">@null</item>
+        <item name="android:editTextColor">@null</item>
+        <item name="android:textCursorDrawable">@drawable/shape_edit_text_cursor</item>
     </style>
+
+    <style name="Theme.AndroidChallenge.FilledBtn" parent="Widget.AppCompat.Button">
+
+        <item name="android:background">@drawable/shape_default_btn_filled_background</item>
+        <item name="android:textAppearance">@style/ButtonTextAppearance</item>
+        <item name="android:textColor">@color/btn_filled_text_color</item>
+
+    </style>
+
+    <style name="Theme.AndroidChallenge.UnfilledBtn" parent="Widget.AppCompat.Button">
+
+        <item name="android:background">@drawable/shape_default_btn_unfilled_background</item>
+        <item name="android:textAppearance">@style/ButtonTextAppearance</item>
+        <item name="android:textColor">@color/btn_unfilled_text_color</item>
+
+    </style>
+
+    <style name="ButtonTextAppearance" parent="TextAppearance.AppCompat.Widget.Button">
+
+        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="fontFamily">@font/montserrat</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+
+    </style>
+
+
+    <style name="Theme.AndroidChallenge.OutlinedTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <item name="hintTextColor">@color/selector_text_input_layout_outlined</item>
+        <item name="boxStrokeColor">@color/selector_text_input_layout_outlined</item>
+        <item name="endIconTint">@color/selector_text_input_layout_outlined</item>
+
+    </style>
+
+    <style name="Theme.AndroidChallenge.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textAppearance">@style/EditTextTextAppearance</item>
+    </style>
+
+    <style name="EditTextTextAppearance" parent="TextAppearance.MaterialComponents.Subtitle1">
+
+        <item name="android:textColor">@color/text_main_color</item>
+        <item name="fontFamily">@font/montserrat</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+
 </resources>

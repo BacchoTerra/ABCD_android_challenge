@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="btn_default_elevation">4dp</dimen>
+    <dimen name="btn_default_corner_radius">20dp</dimen>
+    <dimen name="btn_unfilled_default_stroke_width">1dp</dimen>
+
+    <dimen name="card_default_elevation">4dp</dimen>
+    <dimen name="card_default_corner_radius">10dp</dimen>
+    <dimen name="default_edit_text_cursor_width">2dp</dimen>
+
+
+</resources>

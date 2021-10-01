@@ -7,4 +7,52 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="primary_color">#47CDFF</color>
+    <color name="on_primary_color">#FFFFFF</color>
+
+    <color name="main_background_color">#FFFFFF</color>
+    <color name="grey_background_color">#F5F5F5</color>
+
+    <color name="card_background_color">#FFFFFF</color>
+    <color name="card_stroke_color">#E1E1E1</color>
+
+
+    <color name="edit_text_outlined_icon_active_color">@color/primary_color</color>
+    <color name="edit_text_outlined_icon_inactive_color">#C3C3C3</color>
+    <color name="edit_text_outlined_stroke_active_color">@color/primary_color</color>
+    <color name="edit_text_outlined_stroke_inactive_color">#C3C3C3</color>
+    <color name="edit_text_outlined_hint_active_color">@color/primary_color</color>
+    <color name="edit_text_outlined_hint_inactive_color">#C3C3C3</color>
+
+
+    <color name="btm_nav_background_color">#FFFFFF</color>
+    <color name="btm_nav_stroke_color">#E1E1E1</color>
+    <color name="btm_nav_icon_active_color">#21A2DA</color>
+    <color name="btm_nav_icon_inactive_color">#21A2DA</color>
+    <color name="btm_nav_icon_background_active_color">#CFF2FF</color>
+    <color name="btm_nav_text_active_color">@color/btm_nav_icon_active_color</color>
+
+    <color name="btn_filled_background_color">@color/primary_color</color>
+    <color name="btn_unfilled_background_color">#FFFFFF</color>
+    <color name="btn_filled_text_color">@color/on_primary_color</color>
+    <color name="btn_unfilled_text_color">#25ABE6</color>
+    <color name="btn_unfilled_stroke_color">@color/primary_color</color>
+    <color name="btn_shadow_dark_color">#25ABE6</color>
+    <color name="btn_shadow_light_color">@color/primary_color</color>
+
+
+    <color name="check_box_box_color">@color/primary_color</color>
+
+    <color name="toolbar_background_color">#F7F7F7</color>
+
+    <color name="text_light_color">#C4C4C4</color>
+    <color name="text_main_color">#616161</color>
+    <color name="text_header_color">@color/primary_color</color>
+
+    <color name="fab_tint_color">@color/primary_color</color>
+    <color name="fab_icon_tint_color">@color/on_primary_color</color>
+
+
+
 </resources>
