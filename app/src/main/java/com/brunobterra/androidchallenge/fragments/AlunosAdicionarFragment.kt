@@ -25,5 +25,17 @@ class AlunosAdicionarFragment : Fragment() {
         return binder.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binder.fragmentAlunosAdicionarContentCustomToolbar.contentAdicionarAlunoCustomToolbarImageBack.setOnClickListener {
+            navegarUp()
+        }
+    }
+
+
+    private fun navegarUp() {
+        requireActivity().onBackPressed()
+    }
+
 
 }

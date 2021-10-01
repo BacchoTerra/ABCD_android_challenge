@@ -6,22 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".fragments.AlunosAdicionarFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/fragment_alunos_adicionar_appBarLayout"
+    <include
+        layout="@layout/content_adicionar_aluno_custom_toolbar"
+        android:id="@+id/fragment_alunos_adicionar_contentCustomToolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/fragment_alunos_adicionar_toolbar"
-            style="@style/Theme.AndroidChallenge.Toolbar"
-            app:title="@string/label_toolbar_title_adicionar_aluno"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize" />
-
-    </com.google.android.material.appbar.AppBarLayout>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/fragment_alunos_adicionar_inputLayoutNome"
@@ -35,7 +27,7 @@
         app:endIconMode="custom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_alunos_adicionar_appBarLayout">
+        app:layout_constraintTop_toBottomOf="@+id/fragment_alunos_adicionar_contentCustomToolbar">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fragment_alunos_adicionar_editNome"
