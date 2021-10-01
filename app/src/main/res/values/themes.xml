@@ -108,4 +108,15 @@
 
     </style>
 
+    <style name="Theme.AndroidChallenge.BubbleNavItem">
+
+        <item name="bt_shape">@drawable/shape_custom_btm_nav_item</item>
+        <item name="bt_titleSize">@dimen/btm_nav_item_text_size</item>
+        <item name="bt_padding">@dimen/btm_nav_item_padding</item>
+        <item name="bt_titlePadding">@dimen/btm_nav_item_title_padding</item>
+        <item name="bt_colorActive">@color/btm_nav_icon_active_color</item>
+        <item name="bt_colorInactive">@color/btm_nav_icon_active_color</item>
+
+    </style>
+
 </resources>

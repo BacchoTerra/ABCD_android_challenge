@@ -16,5 +16,12 @@
     <dimen name="check_box_text_padding">11dp</dimen>
     <dimen name="check_box_text_line_height">3sp</dimen>
 
+    <dimen name="btm_nav_container_default_height">64dp</dimen>
+    <dimen name="btm_nav_container_stroke_width">1dp</dimen>
+    <dimen name="btm_nav_item_shape_default_radius">20dp</dimen>
+    <dimen name="btm_nav_item_text_size">10sp</dimen>
+    <dimen name="btm_nav_item_padding">7dp</dimen>
+    <dimen name="btm_nav_item_title_padding">12dp</dimen>
+
 
 </resources>

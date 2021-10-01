@@ -21,4 +21,8 @@
     <string name="cd_fechar">Fechar</string>
     <string name="label_toolbar_title_adicionar_aluno">Adicionar aluno</string>
     <string name="cd_adicionar_aluno">Adicionar aluno</string>
+    <string name="btm_nav_item_label_inicio">Inicio</string>
+    <string name="btm_nav_item_label_aluno">Aluno</string>
+    <string name="btm_nav_item_label_ajuda">Ajuda</string>
+    <string name="btm_nav_item_label_config">Configurações</string>
 </resources>
