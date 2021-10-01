@@ -34,7 +34,7 @@ class AlunosListaFragment : Fragment() {
 
         navController = Navigation.findNavController(binder.root)
 
-        binder.floatingActionButton.setOnClickListener {
+        binder.fragmentAlunosListaFabAdicionar.setOnClickListener {
 
 
             navController.navigate(R.id.action_alunosListaFragment_to_alunosAdicionarFragment)

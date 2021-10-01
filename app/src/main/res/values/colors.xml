@@ -43,6 +43,7 @@
 
 
     <color name="check_box_box_color">@color/primary_color</color>
+    <color name="check_box_text_color">#C4C4C4</color>
 
     <color name="toolbar_background_color">#F7F7F7</color>
 

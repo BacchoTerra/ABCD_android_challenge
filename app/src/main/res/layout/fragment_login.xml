@@ -7,22 +7,81 @@
     tools:context=".fragments.LoginFragment">
 
 
-    <TextView
-        android:id="@+id/textView2"
+    <ImageView
+        android:id="@+id/fragment_login_imageLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Entrar"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="90dp"
+        android:contentDescription="@string/cd_logo_eduedu"
+        android:layout_marginTop="54dp"
+        android:layout_marginEnd="92dp"
+        android:src="@drawable/ic_eduedu_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fragment_login_inputLayoutEmail"
+        style="@style/Theme.AndroidChallenge.OutlinedTextInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="57dp"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_baseline_email_24"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_login_imageLogo">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fragment_login_editEmail"
+            style="@style/Theme.AndroidChallenge.EditText"
+            android:layout_width="match_parent"
+            android:inputType="textEmailAddress"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_email" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fragment_login_inputLayoutSenha"
+        style="@style/Theme.AndroidChallenge.OutlinedTextInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="31dp"
+        app:passwordToggleEnabled="true"
+        app:layout_constraintEnd_toEndOf="@+id/fragment_login_inputLayoutEmail"
+        app:layout_constraintStart_toStartOf="@+id/fragment_login_inputLayoutEmail"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_login_inputLayoutEmail">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fragment_login_editSenha"
+            style="@style/Theme.AndroidChallenge.EditText"
+            android:layout_width="match_parent"
+            android:inputType="textPassword"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_senha" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/fragment_login_btnLogin"
+        style="@style/Theme.AndroidChallenge.FilledBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="37dp"
+        android:text="@string/btn_label_login"
+        app:layout_constraintEnd_toEndOf="@+id/fragment_login_inputLayoutSenha"
+        app:layout_constraintStart_toStartOf="@+id/fragment_login_inputLayoutSenha"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_login_inputLayoutSenha" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/fragment_login_btnEsqueciSenha"
+        style="@style/Theme.AndroidChallenge.UnfilledBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:text="@string/btn_label_esqueci_senha"
+        app:layout_constraintEnd_toEndOf="@+id/fragment_login_btnLogin"
+        app:layout_constraintStart_toStartOf="@+id/fragment_login_btnLogin"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_login_btnLogin" />
 </androidx.constraintlayout.widget.ConstraintLayout>

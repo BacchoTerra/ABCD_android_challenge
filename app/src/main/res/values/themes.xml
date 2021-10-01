@@ -15,6 +15,7 @@
         <item name="editTextColor">@null</item>
         <item name="android:editTextColor">@null</item>
         <item name="android:textCursorDrawable">@drawable/shape_edit_text_cursor</item>
+        <item name="android:windowBackground">@color/main_background_color</item>
     </style>
 
     <style name="Theme.AndroidChallenge.FilledBtn" parent="Widget.AppCompat.Button">
@@ -39,7 +40,7 @@
         <item name="fontFamily">@font/montserrat</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/btn_default_text_size</item>
 
     </style>
 
@@ -49,6 +50,7 @@
         <item name="hintTextColor">@color/selector_text_input_layout_outlined</item>
         <item name="boxStrokeColor">@color/selector_text_input_layout_outlined</item>
         <item name="endIconTint">@color/selector_text_input_layout_outlined</item>
+        <item name="passwordToggleTint">@color/selector_text_input_layout_outlined</item>
 
     </style>
 
@@ -64,5 +66,46 @@
 
     </style>
 
+    <style name="Theme.AndroidChallenge.HeaderText1" parent="TextAppearance.MaterialComponents.Headline6">
+
+        <item name="fontFamily">@font/montserrat</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_header_1_default_text_size</item>
+        <item name="android:textColor">@color/text_header_color</item>
+
+    </style>
+
+    <style name="Theme.AndroidChallenge.HeaderText2" parent="Theme.AndroidChallenge.HeaderText1">
+        <item name="android:textSize">@dimen/text_header_2_default_text_size</item>
+    </style>
+
+
+    <style name="Theme.AndroidChallenge.Toolbar" parent="Widget.AppCompat.Toolbar">
+
+        <item name="titleTextAppearance">@style/Theme.AndroidChallenge.HeaderText1</item>
+        <item name="colorControlNormal">#457</item>
+        <item name="android:background">@color/toolbar_background_color</item>
+        <item name="titleTextColor">@color/text_header_color</item>
+
+    </style>
+
+    <style name="Theme.AndroidChallenge.CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+
+        <item name="android:textAppearance">@style/CheckBoxTextAppearance</item>
+        <item name="buttonTint">@color/check_box_box_color</item>
+        <item name="android:paddingLeft">@dimen/check_box_text_padding</item>
+
+
+    </style>
+
+    <style name="CheckBoxTextAppearance" parent="TextAppearance.AppCompat.Caption">
+
+        <item name="android:textColor">@color/check_box_text_color</item>
+        <item name="fontFamily">@font/montserrat</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:lineSpacingExtra">@dimen/check_box_text_line_height</item>
+
+
+    </style>
 
 </resources>

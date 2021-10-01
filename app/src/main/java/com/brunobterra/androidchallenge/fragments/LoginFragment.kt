@@ -34,7 +34,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(binder.root)
 
-        binder.button.setOnClickListener {
+        binder.fragmentLoginBtnLogin.setOnClickListener {
             navController.navigate(R.id.action_loginFragment_to_mainNavHostFragment)
         }
 

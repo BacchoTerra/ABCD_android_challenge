@@ -5,4 +5,20 @@
     <string name="menu_label_aluno">Aluno</string>
     <string name="menu_label_informacoes">Informações</string>
     <string name="menu_label_configuracoes">Configurações</string>
+    <string name="cd_logo_eduedu">Logo eduedu</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_senha">Senha</string>
+    <string name="btn_label_login">Login</string>
+    <string name="btn_label_esqueci_senha">Esqueci senha</string>
+    <string name="hint_label_nome">Nome</string>
+    <string name="cd_avatar_selecionado">Avatar selecionado</string>
+    <string name="btn_label_mudar_avatar">Mudar avatar</string>
+    <string name="chk_box_label_autoriza_coleta_dados">Eu autorizo o EduEdu a coletar e processar os dados do meu filho(a) conforme a política de privacidade.</string>
+    <string name="btn_label_salvar">Salvar</string>
+    <string name="label_selecionar_aluno">Selecionar Aluno</string>
+    <string name="hint_label_pesquisar">Pesquisar</string>
+    <string name="label_filtrar_por">Filtrar por</string>
+    <string name="cd_fechar">Fechar</string>
+    <string name="label_toolbar_title_adicionar_aluno">Adicionar aluno</string>
+    <string name="cd_adicionar_aluno">Adicionar aluno</string>
 </resources>
