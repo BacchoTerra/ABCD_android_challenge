@@ -48,7 +48,7 @@ class AlunosListaFragment : Fragment(),View.OnClickListener {
 
         val mAdapter = CriancasAdapter(requireActivity())
 
-        with(binder.fragmentAlunosListaRecyclerCriacas){
+        with(binder.fragmentAlunosListaRecyclerCriancas){
 
             adapter = mAdapter
             layoutManager = GridLayoutManager(requireActivity(),2,GridLayoutManager.VERTICAL,false)
