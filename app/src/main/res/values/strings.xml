@@ -30,4 +30,7 @@
     <string name="toast_login_preencha_dados">Preencha os dois campos</string>
     <string name="cd_avatar">Avatar</string>
     <string name="label_aluno_ano">%1$dº ano</string>
+    <string name="toast_salvar_crianca_preencha_nome">Informe o nome da criança</string>
+    <string name="toast_salvar_crianca_politica_privacidade">Confirme com a política de privacidade</string>
+    <string name="toast_algo_deu_errado">Ops! Algo deu errado. Tente novamente</string>
 </resources>

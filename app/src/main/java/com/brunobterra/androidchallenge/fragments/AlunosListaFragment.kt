@@ -16,11 +16,14 @@ import com.brunobterra.androidchallenge.databinding.FragmentAlunosListaBinding
 
 class AlunosListaFragment : Fragment(),View.OnClickListener {
 
-    lateinit var navController: NavController
 
+    //Componentes de layout
     private val binder by lazy {
         FragmentAlunosListaBinding.inflate(layoutInflater)
     }
+
+    //Navigation
+    lateinit var navController: NavController
 
 
     override fun onCreateView(

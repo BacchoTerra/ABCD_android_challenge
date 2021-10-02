@@ -65,7 +65,7 @@
         app:layout_constraintTop_toBottomOf="@+id/fragment_alunos_adicionar_imageAvatar" />
 
     <CheckBox
-        android:id="@+id/fragment_alunos_adicionar_cehckBozAutorizacao"
+        android:id="@+id/fragment_alunos_adicionar_checkBoxAutorizacao"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -88,6 +88,17 @@
         android:text="@string/btn_label_salvar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_alunos_adicionar_cehckBozAutorizacao" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_alunos_adicionar_checkBoxAutorizacao" />
+
+    <ProgressBar
+        android:id="@+id/fragment_alunos_adicionar_progressSalvando"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_alunos_adicionar_checkBoxAutorizacao" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
