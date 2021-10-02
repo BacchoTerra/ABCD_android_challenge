@@ -50,19 +50,30 @@ class LoginFragment : Fragment(), View.OnClickListener{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(binder.root)
 
         init()
 
     }
 
+    /**
+     * Inicial variaveis principais da classe e clickListeners.
+     */
     private fun init() {
+
+        navController = Navigation.findNavController(binder.root)
 
         binder.fragmentLoginBtnLogin.setOnClickListener(this)
         binder.fragmentLoginBtnEsqueciSenha.setOnClickListener(this)
 
     }
 
+    /**
+     * Inicia a operação de login do usuario. Caso ela falhe por um erro de `FirebaseAuthInvalidUserException`,
+     * significando que o usuario não esta registrado, ela delegará a função de registrar para a função
+     * `registrarUsuario`. Caso seja um erro diferente, notificara o usuario atraves de um Toast.
+     *
+     * @see registrarUsuairio
+     */
     private fun login() {
 
         val email = binder.fragmentLoginEditEmail.text.toString()
@@ -95,12 +106,25 @@ class LoginFragment : Fragment(), View.OnClickListener{
         }
     }
 
+    /**
+     * Checa se os campos de não foram deixados em branco.
+     *
+     * @param email E-mail do usuário.
+     * @param senha senha do usuário.
+     * @return `true` quando todos os campos foram preenchidos, `false` quando pelo menos um não for.
+     */
     private fun dadosSaoValidos(email:String,senha:String) : Boolean{
 
         return email.isNotBlank() && senha.isNotBlank()
 
     }
 
+    /**
+     * Caso o método `login` retorne `FirebaseAuthInvalidUserException` esse método será chamado para registrar o usuario.
+     *
+     * @param email E-mail do usuário.
+     * @param senha senha do usuário.
+     */
     private suspend fun registrarUsuairio(email: String,senha: String){
 
         usuarioViewModel.registrarUsuario(email,senha).collectLatest {e : Exception?->
@@ -116,6 +140,16 @@ class LoginFragment : Fragment(), View.OnClickListener{
 
     }
 
+    /**
+     * Coloca o layout em estado de carregamento para informar o usuário sobre a operação de background.
+     * caso a operação de background tenha falhado, exibe uma mensagem Toast com a exception.
+     *
+     * @param carregando define as visibilidades de views de carregamento.
+     * @param exception se não null, fornecerá uma mensagem para demonstrar ao usuário.
+     *
+     * @see login
+     * @see registrarUsuairio
+     */
     private suspend  fun setLayoutCarregando(carregando:Boolean,exception:Exception?) {
 
         withContext(Dispatchers.Main){
@@ -129,6 +163,10 @@ class LoginFragment : Fragment(), View.OnClickListener{
         }
     }
 
+    /**
+     * Realiza a troca de fragment para a tela principal somente se a operação de login,
+     * registrar usuario, ou caso ja tenha um usuario logado sejam verdadeiras e tenham sucesso.
+     */
     private suspend fun navegarParaPaginaPrincipal() {
 
         withContext(Dispatchers.Main){
