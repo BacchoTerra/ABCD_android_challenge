@@ -13,22 +13,16 @@ import kotlinx.coroutines.flow.flow
 
 class CriancaViewModel(private val repo: CriancaRepository) : ViewModel() {
 
-    val ultimaCriancaSalva = MutableLiveData<Crianca?>(null)
-
     private val currentQuery = MutableLiveData<AlunoQueryBuilder>(null)
 
     val items = currentQuery.switchMap { alunoQueryBuilder: AlunoQueryBuilder ->
 
-        repo.getCriancas(repo.defineQuery(alunoQueryBuilder.orderBy, alunoQueryBuilder.nameQuery)).cachedIn(viewModelScope)
+        repo.getCriancas(repo.defineQuery(alunoQueryBuilder)).cachedIn(viewModelScope)
 
     }.asFlow()
 
-    fun defineQuery(orderBy: AlunoQuery, query: String?) {
-        currentQuery.value = AlunoQueryBuilder(orderBy, query)
-    }
-
-    fun setUltimaCriancaSalva(crianca: Crianca?) {
-        ultimaCriancaSalva.value = crianca
+    fun changeQuery(builder : AlunoQueryBuilder) {
+        currentQuery.value = builder
     }
 
     fun salvarCrianca(crianca: Crianca, avatar: Drawable) = flow<Exception?> {

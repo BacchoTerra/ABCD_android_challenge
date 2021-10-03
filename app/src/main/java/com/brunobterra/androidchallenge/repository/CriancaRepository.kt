@@ -71,20 +71,20 @@ class CriancaRepository {
         }).liveData
     }
 
-    fun defineQuery(orderBy: AlunoQuery, nameQuery: String?): Query {
+    fun defineQuery(builder :AlunoQueryBuilder): Query {
 
         var definedQuery: Query = baseAlunoQuery
 
-        if (orderBy == AlunoQuery.ORDER_NAME) {
+        if (builder.orderBy == AlunoQuery.ORDER_NAME) {
             definedQuery =
                 baseAlunoQuery.orderBy(Crianca::nomeDePesquisa.name, Query.Direction.ASCENDING)
 
-            nameQuery?.let {
+            builder.nameQuery?.let {
                 definedQuery =
                     definedQuery.whereGreaterThanOrEqualTo(Crianca::nomeDePesquisa.name, it)
             }
 
-        } else if (orderBy == AlunoQuery.ORDER_ANO) {
+        } else if (builder.orderBy == AlunoQuery.ORDER_ANO) {
 
             definedQuery = baseAlunoQuery.orderBy(Crianca::ano.name, Query.Direction.ASCENDING)
         }
@@ -92,7 +92,6 @@ class CriancaRepository {
         return definedQuery
 
     }
-
 }
 
 data class AlunoQueryBuilder(

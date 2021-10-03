@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:focusableInTouchMode="true"
-    android:focusable="true"
     android:background="@color/main_background_color"
     android:paddingBottom="48dp">
 
@@ -50,6 +48,8 @@
             android:id="@+id/content_alunos_search_editPesquisa"
             style="@style/Theme.AndroidChallenge.EditText"
             android:layout_width="match_parent"
+            android:inputType="textPersonName"
+            android:nextFocusDown="@id/content_alunos_search_tabLayoutFiltrarPor"
             android:layout_height="wrap_content"
             android:hint="@string/hint_label_pesquisar" />
     </com.google.android.material.textfield.TextInputLayout>

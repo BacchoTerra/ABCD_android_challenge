@@ -1,26 +1,21 @@
 package com.brunobterra.androidchallenge.fragments
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.brunobterra.androidchallenge.R
 import com.brunobterra.androidchallenge.adapter.CriancasAdapter
 import com.brunobterra.androidchallenge.application.ChallengeApplication
 import com.brunobterra.androidchallenge.databinding.FragmentAlunosListaBinding
-import com.brunobterra.androidchallenge.model.Crianca
 import com.brunobterra.androidchallenge.repository.AlunoQuery
 import com.brunobterra.androidchallenge.repository.AlunoQueryBuilder
 import com.brunobterra.androidchallenge.utils.shortToast
@@ -65,9 +60,8 @@ class AlunosListaFragment : Fragment(),View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        observeCriancaSalva()
-        queryByYear()
-        queryByName()
+        initFilterByNameOrYear()
+        initQueryByName()
     }
 
     private fun init() {
@@ -81,7 +75,7 @@ class AlunosListaFragment : Fragment(),View.OnClickListener {
 
         val mAdapter = CriancasAdapter(requireActivity())
 
-        criancaViewModel.defineQuery(alunoQueryBuilder.orderBy,alunoQueryBuilder.nameQuery)
+        criancaViewModel.changeQuery(alunoQueryBuilder)
 
         lifecycleScope.launch {
 
@@ -98,27 +92,20 @@ class AlunosListaFragment : Fragment(),View.OnClickListener {
         }
     }
 
-    private fun observeCriancaSalva() {
-        criancaViewModel.ultimaCriancaSalva.observe(viewLifecycleOwner){
-            it?.let {
-                shortToast("mudou")
-                //todo: Esse metodo, nessa parte aqui vai se usada para update data quando adicionar uma nova crianca.
-            }
-        }
-    }
-
-    private fun queryByYear() {
+    private fun initFilterByNameOrYear() {
 
         binder.fragmentAlunosListaContentSearch.contentAlunosSearchTabLayoutFiltrarPor.addOnTabSelectedListener(object:TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
 
                  if (binder.fragmentAlunosListaContentSearch.contentAlunosSearchTabLayoutFiltrarPor.getTabAt(0)?.isSelected == true){
+                     enableEditName(true)
                      alunoQueryBuilder.orderBy = AlunoQuery.ORDER_NAME
                  }else if(binder.fragmentAlunosListaContentSearch.contentAlunosSearchTabLayoutFiltrarPor.getTabAt(1)?.isSelected == true){
+                     enableEditName(false)
                      alunoQueryBuilder.orderBy = AlunoQuery.ORDER_ANO
                  }
 
-                criancaViewModel.defineQuery(alunoQueryBuilder.orderBy,alunoQueryBuilder.nameQuery)
+                criancaViewModel.changeQuery(alunoQueryBuilder)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -133,7 +120,15 @@ class AlunosListaFragment : Fragment(),View.OnClickListener {
 
     }
 
-    private fun queryByName() {
+    private fun enableEditName(enabled : Boolean) {
+
+        if (!enabled) binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.clearFocus()
+
+        binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.isEnabled = enabled
+
+    }
+
+    private fun initQueryByName() {
 
         binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -153,7 +148,7 @@ class AlunosListaFragment : Fragment(),View.OnClickListener {
                 }else {
                     alunoQueryBuilder.nameQuery = null
                 }
-                criancaViewModel.defineQuery(alunoQueryBuilder.orderBy,alunoQueryBuilder.nameQuery)
+                criancaViewModel.changeQuery(alunoQueryBuilder)
 
             }
 

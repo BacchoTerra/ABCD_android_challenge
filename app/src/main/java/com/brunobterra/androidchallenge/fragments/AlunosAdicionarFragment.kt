@@ -64,7 +64,6 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
     }
 
     private fun init() {
-        criancaViewModel.setUltimaCriancaSalva(null)
 
         binder.fragmentAlunosAdicionarContentCustomToolbar.contentAdicionarAlunoCustomToolbarImageBack.setOnClickListener(
             this
@@ -108,7 +107,9 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
                         return@collectLatest
 
                     }
-                    setResultadoSucesso(crianca)
+
+                    navegarUp()
+
                 }
         }
 
@@ -136,11 +137,6 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
         }
 
 
-    }
-
-    private fun setResultadoSucesso(crianca: Crianca) {
-        criancaViewModel.setUltimaCriancaSalva(crianca)
-        navegarUp()
     }
 
     private fun navegarUp() {

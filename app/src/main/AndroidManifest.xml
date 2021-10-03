@@ -12,7 +12,6 @@
         android:theme="@style/Theme.AndroidChallenge">
         <activity
             android:name=".activities.MainActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
