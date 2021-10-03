@@ -3,13 +3,12 @@ package com.brunobterra.androidchallenge.repository
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import androidx.core.graphics.drawable.toBitmap
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.PagingSource
+import androidx.lifecycle.LiveData
+import androidx.paging.*
 import com.brunobterra.androidchallenge.model.Crianca
 import com.brunobterra.androidchallenge.source.AlunosPagingSource
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.flow.Flow
@@ -21,11 +20,16 @@ class CriancaRepository {
 
     companion object {
         const val COLLECTION_CRIANCAS = "collection_criancas"
+        const val QUERY_LIMIT_ALUNOS = 10L
         const val STORAGE_REF_INICIAL = "criancas/avatar/"
     }
 
     private val mFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val mStorage: StorageReference = FirebaseStorage.getInstance().reference
+
+    private val baseAlunoQuery: Query by lazy {
+        mFirestore.collection(COLLECTION_CRIANCAS).limit(QUERY_LIMIT_ALUNOS)
+    }
 
 
     suspend fun salvarCrianca(crianca: Crianca, avatar: Drawable): Exception? {
@@ -60,13 +64,43 @@ class CriancaRepository {
         return baos.toByteArray()
     }
 
-    fun getCriancas() : Flow<PagingData<Crianca>>{
-
-        val query = mFirestore.collection(COLLECTION_CRIANCAS)
+    fun getCriancas(query: Query): LiveData<PagingData<Crianca>> {
 
         return Pager(config = PagingConfig(10), pagingSourceFactory = {
             AlunosPagingSource(query)
-        }).flow
+        }).liveData
     }
 
+    fun defineQuery(orderBy: AlunoQuery, nameQuery: String?): Query {
+
+        var definedQuery: Query = baseAlunoQuery
+
+        if (orderBy == AlunoQuery.ORDER_NAME) {
+            definedQuery =
+                baseAlunoQuery.orderBy(Crianca::nomeDePesquisa.name, Query.Direction.ASCENDING)
+
+            nameQuery?.let {
+                definedQuery =
+                    definedQuery.whereGreaterThanOrEqualTo(Crianca::nomeDePesquisa.name, it)
+            }
+
+        } else if (orderBy == AlunoQuery.ORDER_ANO) {
+
+            definedQuery = baseAlunoQuery.orderBy(Crianca::ano.name, Query.Direction.ASCENDING)
+        }
+
+        return definedQuery
+
+    }
+
+}
+
+data class AlunoQueryBuilder(
+    var orderBy: AlunoQuery = AlunoQuery.ORDER_NAME,
+    var nameQuery: String? = null
+)
+
+enum class AlunoQuery {
+    ORDER_NAME,
+    ORDER_ANO
 }

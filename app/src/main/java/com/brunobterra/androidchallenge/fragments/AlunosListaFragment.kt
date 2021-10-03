@@ -1,13 +1,18 @@
 package com.brunobterra.androidchallenge.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.NavHost
 import androidx.navigation.Navigation
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,9 +21,12 @@ import com.brunobterra.androidchallenge.adapter.CriancasAdapter
 import com.brunobterra.androidchallenge.application.ChallengeApplication
 import com.brunobterra.androidchallenge.databinding.FragmentAlunosListaBinding
 import com.brunobterra.androidchallenge.model.Crianca
+import com.brunobterra.androidchallenge.repository.AlunoQuery
+import com.brunobterra.androidchallenge.repository.AlunoQueryBuilder
 import com.brunobterra.androidchallenge.utils.shortToast
 import com.brunobterra.androidchallenge.viewmodel.CriancaViewModel
 import com.brunobterra.androidchallenge.viewmodel.CriancaViewModelFactory
+import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -26,7 +34,7 @@ import kotlinx.coroutines.launch
 class AlunosListaFragment : Fragment(),View.OnClickListener {
 
     //ViewModel
-    private val criancaViewModel: CriancaViewModel by navGraphViewModels(R.id.alunos_nav_graph) {
+    private val criancaViewModel: CriancaViewModel by viewModels {
         CriancaViewModelFactory((requireActivity().application as ChallengeApplication).criancaRepo)
     }
 
@@ -37,9 +45,15 @@ class AlunosListaFragment : Fragment(),View.OnClickListener {
 
     //Navigation
     lateinit var navController: NavController
-    val ultimaCriancaSalva : Crianca? = null
+
+    //Firestore query
+    private val alunoQueryBuilder = AlunoQueryBuilder()
 
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initRecyclerView()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,8 +65,9 @@ class AlunosListaFragment : Fragment(),View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        initRecyclerView()
         observeCriancaSalva()
+        queryByYear()
+        queryByName()
     }
 
     private fun init() {
@@ -66,8 +81,11 @@ class AlunosListaFragment : Fragment(),View.OnClickListener {
 
         val mAdapter = CriancasAdapter(requireActivity())
 
+        criancaViewModel.defineQuery(alunoQueryBuilder.orderBy,alunoQueryBuilder.nameQuery)
+
         lifecycleScope.launch {
-            criancaViewModel.criancas.collectLatest {
+
+            criancaViewModel.items.collectLatest {
                 mAdapter.submitData(it)
             }
         }
@@ -89,6 +107,60 @@ class AlunosListaFragment : Fragment(),View.OnClickListener {
         }
     }
 
+    private fun queryByYear() {
+
+        binder.fragmentAlunosListaContentSearch.contentAlunosSearchTabLayoutFiltrarPor.addOnTabSelectedListener(object:TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+
+                 if (binder.fragmentAlunosListaContentSearch.contentAlunosSearchTabLayoutFiltrarPor.getTabAt(0)?.isSelected == true){
+                     alunoQueryBuilder.orderBy = AlunoQuery.ORDER_NAME
+                 }else if(binder.fragmentAlunosListaContentSearch.contentAlunosSearchTabLayoutFiltrarPor.getTabAt(1)?.isSelected == true){
+                     alunoQueryBuilder.orderBy = AlunoQuery.ORDER_ANO
+                 }
+
+                criancaViewModel.defineQuery(alunoQueryBuilder.orderBy,alunoQueryBuilder.nameQuery)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+
+        })
+
+    }
+
+    private fun queryByName() {
+
+        binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+                val nome = p0.toString()
+
+                if (nome.length >=3) {
+                    alunoQueryBuilder.nameQuery = nome.lowercase()
+                }else {
+                    alunoQueryBuilder.nameQuery = null
+                }
+                criancaViewModel.defineQuery(alunoQueryBuilder.orderBy,alunoQueryBuilder.nameQuery)
+
+            }
+
+        })
+
+    }
+
     override fun onClick(p0: View?) {
 
         when(p0?.id) {
@@ -100,6 +172,5 @@ class AlunosListaFragment : Fragment(),View.OnClickListener {
         }
 
     }
-
 
 }

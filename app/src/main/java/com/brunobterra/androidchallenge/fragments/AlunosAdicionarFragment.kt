@@ -33,7 +33,7 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
     }
 
     //ViewModel
-    private val criancaViewModel: CriancaViewModel by navGraphViewModels(R.id.alunos_nav_graph) {
+    private val criancaViewModel: CriancaViewModel by viewModels {
         CriancaViewModelFactory((requireActivity().application as ChallengeApplication).criancaRepo)
     }
 
@@ -66,7 +66,9 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
     private fun init() {
         criancaViewModel.setUltimaCriancaSalva(null)
 
-        binder.fragmentAlunosAdicionarContentCustomToolbar.contentAdicionarAlunoCustomToolbarImageBack.setOnClickListener(this)
+        binder.fragmentAlunosAdicionarContentCustomToolbar.contentAdicionarAlunoCustomToolbarImageBack.setOnClickListener(
+            this
+        )
         binder.fragmentAlunosAdicionarBtnMudarAvatar.setOnClickListener(this)
         binder.fragmentAlunosAdicionarBtnSalvar.setOnClickListener(this)
 
@@ -96,7 +98,8 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
 
             setLayoutCarregando(true)
 
-            criancaViewModel.salvarCrianca(crianca, avatarDrawable).collectLatest { exception: Exception? ->
+            criancaViewModel.salvarCrianca(crianca, avatarDrawable)
+                .collectLatest { exception: Exception? ->
 
                     exception?.let {
 
@@ -107,16 +110,16 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
                     }
                     setResultadoSucesso(crianca)
                 }
-
         }
 
     }
 
-    private fun setLayoutCarregando(carregando : Boolean) {
+    private fun setLayoutCarregando(carregando: Boolean) {
 
         binder.fragmentAlunosAdicionarProgressSalvando.isVisible = carregando
         binder.fragmentAlunosAdicionarBtnSalvar.isVisible = !carregando
-        binder.fragmentAlunosAdicionarContentCustomToolbar.contentAdicionarAlunoCustomToolbarImageBack.isEnabled = !carregando
+        binder.fragmentAlunosAdicionarContentCustomToolbar.contentAdicionarAlunoCustomToolbarImageBack.isEnabled =
+            !carregando
 
     }
 
