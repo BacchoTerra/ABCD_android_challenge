@@ -10,6 +10,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.navGraphViewModels
 import com.brunobterra.androidchallenge.R
 import com.brunobterra.androidchallenge.application.ChallengeApplication
 import com.brunobterra.androidchallenge.databinding.FragmentAlunosAdicionarBinding
@@ -30,7 +33,7 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
     }
 
     //ViewModel
-    private val criancaViewModel: CriancaViewModel by viewModels {
+    private val criancaViewModel: CriancaViewModel by navGraphViewModels(R.id.alunos_nav_graph) {
         CriancaViewModelFactory((requireActivity().application as ChallengeApplication).criancaRepo)
     }
 
@@ -61,6 +64,7 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
     }
 
     private fun init() {
+        criancaViewModel.setUltimaCriancaSalva(null)
 
         binder.fragmentAlunosAdicionarContentCustomToolbar.contentAdicionarAlunoCustomToolbarImageBack.setOnClickListener(this)
         binder.fragmentAlunosAdicionarBtnMudarAvatar.setOnClickListener(this)
@@ -92,15 +96,16 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
 
             setLayoutCarregando(true)
 
-            criancaViewModel.salvarCrianca(crianca, avatarDrawable)
-                .collectLatest { exception: Exception? ->
+            criancaViewModel.salvarCrianca(crianca, avatarDrawable).collectLatest { exception: Exception? ->
 
                     exception?.let {
+
                         shortToast(R.string.toast_algo_deu_errado)
                         setLayoutCarregando(false)
                         return@collectLatest
+
                     }
-                    navegarUp()
+                    setResultadoSucesso(crianca)
                 }
 
         }
@@ -128,6 +133,11 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
         }
 
 
+    }
+
+    private fun setResultadoSucesso(crianca: Crianca) {
+        criancaViewModel.setUltimaCriancaSalva(crianca)
+        navegarUp()
     }
 
     private fun navegarUp() {
