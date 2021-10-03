@@ -3,10 +3,16 @@ package com.brunobterra.androidchallenge.repository
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import androidx.core.graphics.drawable.toBitmap
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import com.brunobterra.androidchallenge.model.Crianca
+import com.brunobterra.androidchallenge.source.AlunosPagingSource
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -52,6 +58,15 @@ class CriancaRepository {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
 
         return baos.toByteArray()
+    }
+
+    fun getCriancas() : Flow<PagingData<Crianca>>{
+
+        val query = mFirestore.collection(COLLECTION_CRIANCAS)
+
+        return Pager(config = PagingConfig(10), pagingSourceFactory = {
+            AlunosPagingSource(query)
+        }).flow
     }
 
 }

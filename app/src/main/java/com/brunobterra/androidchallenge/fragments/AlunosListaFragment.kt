@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavHost
 import androidx.navigation.Navigation
@@ -18,6 +19,8 @@ import com.brunobterra.androidchallenge.model.Crianca
 import com.brunobterra.androidchallenge.utils.shortToast
 import com.brunobterra.androidchallenge.viewmodel.CriancaViewModel
 import com.brunobterra.androidchallenge.viewmodel.CriancaViewModelFactory
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 class AlunosListaFragment : Fragment(),View.OnClickListener {
@@ -62,6 +65,12 @@ class AlunosListaFragment : Fragment(),View.OnClickListener {
     private fun initRecyclerView() {
 
         val mAdapter = CriancasAdapter(requireActivity())
+
+        lifecycleScope.launch {
+            criancaViewModel.criancas.collectLatest {
+                mAdapter.submitData(it)
+            }
+        }
 
         with(binder.fragmentAlunosListaRecyclerCriancas){
 

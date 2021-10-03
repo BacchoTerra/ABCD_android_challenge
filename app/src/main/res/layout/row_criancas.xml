@@ -29,6 +29,7 @@
                 android:id="@+id/row_crianca_imageAvatar"
                 android:layout_width="126dp"
                 android:layout_height="106dp"
+                android:backgroundTint="@color/card_background_color"
                 android:layout_marginStart="11dp"
                 android:contentDescription="@string/cd_avatar"
                 android:layout_marginTop="11dp"
