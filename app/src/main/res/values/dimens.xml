@@ -8,10 +8,13 @@
 
     <dimen name="card_default_elevation">4dp</dimen>
     <dimen name="card_default_corner_radius">10dp</dimen>
+    <dimen name="card_default_stroke_width">1dp</dimen>
+
     <dimen name="default_edit_text_cursor_width">2dp</dimen>
 
     <dimen name="text_header_1_default_text_size">18sp</dimen>
     <dimen name="text_header_2_default_text_size">14sp</dimen>
+    <dimen name="text_caption_default_text_size">10sp</dimen>
 
     <dimen name="check_box_text_padding">11dp</dimen>
     <dimen name="check_box_text_line_height">3sp</dimen>

@@ -121,4 +121,24 @@
 
     </style>
 
+    <style name="Theme.AndroidChallenge.RowCriacas.TextNome" parent="TextAppearance.MaterialComponents.Body2">
+
+        <item name="android:textColor">@color/text_main_color</item>
+        <item name="fontFamily">@font/montserrat_extra_bold</item>
+        <item name="android:fontFamily">@font/montserrat_extra_bold</item>
+        <item name="android:textSize">@dimen/text_header_2_default_text_size</item>
+
+
+    </style>
+
+    <style name="Theme.AndroidChallenge.RowCriacas.TextAno" parent="TextAppearance.MaterialComponents.Caption">
+
+        <item name="android:textColor">@color/text_main_color</item>
+        <item name="fontFamily">@font/montserrat</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:textSize">@dimen/text_caption_default_text_size</item>
+
+
+    </style>
+
 </resources>
