@@ -11,7 +11,7 @@ import com.brunobterra.androidchallenge.databinding.RowCriancasBinding
 import com.brunobterra.androidchallenge.model.Crianca
 import com.bumptech.glide.Glide
 
-class CriancasAdapter(val context: Context) :
+class CriancasAdapter(val context: Context,val callback : (Crianca) -> Unit) :
     PagingDataAdapter<Crianca, CriancasAdapter.CriancasViewHolder>(criancaComparator) {
 
     companion object {
@@ -34,6 +34,10 @@ class CriancasAdapter(val context: Context) :
             binder.rowCriancaTxtAno.text = context.getString(R.string.label_aluno_ano, crianca.ano)
 
             Glide.with(context).load(crianca.avatarUrl).into(binder.rowCriancaImageAvatar)
+
+            binder.root.setOnClickListener{
+                callback.invoke(crianca)
+            }
 
         }
 

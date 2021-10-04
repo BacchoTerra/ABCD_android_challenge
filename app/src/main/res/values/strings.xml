@@ -33,4 +33,6 @@
     <string name="toast_salvar_crianca_preencha_nome">Informe o nome da criança</string>
     <string name="toast_salvar_crianca_politica_privacidade">Confirme com a política de privacidade</string>
     <string name="toast_algo_deu_errado">Ops! Algo deu errado. Tente novamente</string>
+    <string name="args_navigation_alunos_editar_aluno">args_nav_alunos_editar_aluno</string>
+    <string name="toast_update_nao_trocou_avatar">Você ainda não trocou seu avatar!</string>
 </resources>

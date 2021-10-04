@@ -29,6 +29,10 @@ class CriancaViewModel(private val repo: CriancaRepository) : ViewModel() {
         emit(repo.salvarCrianca(crianca, avatar))
     }
 
+    fun updateCrianca(docId : String, newAvatar:Drawable) = flow <Exception?>{
+        emit(repo.updateCrianca(docId,newAvatar))
+    }
+
 }
 
 class CriancaViewModelFactory(val repo: CriancaRepository) : ViewModelProvider.Factory {

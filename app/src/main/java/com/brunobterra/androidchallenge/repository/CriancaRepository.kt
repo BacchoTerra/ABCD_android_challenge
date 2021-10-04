@@ -71,7 +71,19 @@ class CriancaRepository {
         }).liveData
     }
 
-    fun defineQuery(builder :AlunoQueryBuilder): Query {
+    suspend fun updateCrianca(docId: String, newAvatar : Drawable): Exception? {
+
+        return try {
+
+            val avatarUrl = salvarAvatar(newAvatar,docId)
+            mFirestore.collection(COLLECTION_CRIANCAS).document(docId).update(Crianca::avatarUrl.name,avatarUrl).await()
+            null
+        } catch (e: Exception) {
+            e
+        }
+    }
+
+    fun defineQuery(builder: AlunoQueryBuilder): Query {
 
         var definedQuery: Query = baseAlunoQuery
 

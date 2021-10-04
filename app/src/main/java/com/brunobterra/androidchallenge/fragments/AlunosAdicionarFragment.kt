@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -20,6 +21,7 @@ import com.brunobterra.androidchallenge.model.Crianca
 import com.brunobterra.androidchallenge.utils.shortToast
 import com.brunobterra.androidchallenge.viewmodel.CriancaViewModel
 import com.brunobterra.androidchallenge.viewmodel.CriancaViewModelFactory
+import com.brunobterra.androidchallenge.viewmodel.SharedAlunoViewModel
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -36,6 +38,7 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
     private val criancaViewModel: CriancaViewModel by viewModels {
         CriancaViewModelFactory((requireActivity().application as ChallengeApplication).criancaRepo)
     }
+    private val sharedAlunoViewModel: SharedAlunoViewModel by activityViewModels()
 
     //Lista de avatares
     val avataresList = listOf<Int>(
@@ -46,9 +49,12 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
         R.drawable.avatar_sr_goiaba,
         R.drawable.avatar_zig
     )
-
     var posAvatarAtual = 0
     var avatarAtual = avataresList[posAvatarAtual]
+
+    //Objeto de aluno para edição
+    private var alunoEdicao: Crianca? = null
+    private var hasEditingAlunoChangedAvatar = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,6 +80,28 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
         Glide.with(requireActivity()).load(avatarAtual)
             .into(binder.fragmentAlunosAdicionarImageAvatar)
 
+        retrieveAlunoIfEditing()
+
+    }
+
+    private fun retrieveAlunoIfEditing() {
+
+        sharedAlunoViewModel.alunoDeEdicao.observe(viewLifecycleOwner) {
+            alunoEdicao = it
+            bindLayoutWithEditindAluno()
+        }
+    }
+
+    private fun bindLayoutWithEditindAluno() {
+
+        alunoEdicao?.let {
+            binder.fragmentAlunosAdicionarEditNome.setText(it.nome)
+            Glide.with(requireActivity()).load(it.avatarUrl)
+                .into(binder.fragmentAlunosAdicionarImageAvatar)
+            binder.fragmentAlunosAdicionarCheckBoxAutorizacao.isChecked = true
+            binder.fragmentAlunosAdicionarEditNome.isEnabled = false
+
+        }
     }
 
     private fun mudarAvatar() {
@@ -83,34 +111,51 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
         Glide.with(requireActivity()).load(avatarAtual)
             .into(binder.fragmentAlunosAdicionarImageAvatar)
 
+        alunoEdicao?.let {
+            hasEditingAlunoChangedAvatar = true
+        }
+
     }
 
     private suspend fun salvarCrianca() {
 
         val nome = binder.fragmentAlunosAdicionarEditNome.text.toString()
-        val politicaAceita = binder.fragmentAlunosAdicionarCheckBoxAutorizacao.isChecked
 
-        if (podeSalvarCrianca(nome, politicaAceita)) {
+        val avatarDrawable = ContextCompat.getDrawable(requireActivity(), avatarAtual)!!
+        val crianca = Crianca(nome)
 
-            val avatarDrawable = ContextCompat.getDrawable(requireActivity(), avatarAtual)!!
-            val crianca = Crianca(nome)
+        setLayoutCarregando(true)
 
-            setLayoutCarregando(true)
+        criancaViewModel.salvarCrianca(crianca, avatarDrawable)
+            .collectLatest { exception: Exception? ->
 
-            criancaViewModel.salvarCrianca(crianca, avatarDrawable)
-                .collectLatest { exception: Exception? ->
+                exception?.let {
 
-                    exception?.let {
-
-                        shortToast(R.string.toast_algo_deu_errado)
-                        setLayoutCarregando(false)
-                        return@collectLatest
-
-                    }
-
-                    navegarUp()
+                    shortToast(R.string.toast_algo_deu_errado)
+                    setLayoutCarregando(false)
+                    return@collectLatest
 
                 }
+
+                navegarUp()
+
+            }
+
+
+    }
+
+    private suspend fun updateCrianca() {
+
+        val newAvatar = ContextCompat.getDrawable(requireContext(), avatarAtual)!!
+
+        setLayoutCarregando(true)
+        criancaViewModel.updateCrianca(alunoEdicao!!.docId, newAvatar).collectLatest { exception ->
+
+            exception?.let {
+                setLayoutCarregando(false)
+                shortToast(R.string.toast_algo_deu_errado)
+            }
+            navegarUp()
         }
 
     }
@@ -124,23 +169,30 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
 
     }
 
-    private fun podeSalvarCrianca(nome: String, politicaAceita: Boolean): Boolean {
+    private fun podeSalvarCrianca(): Boolean {
 
-        return if (nome.isBlank()) {
+        return if (binder.fragmentAlunosAdicionarEditNome.text.toString().isBlank()) {
             shortToast(R.string.toast_salvar_crianca_preencha_nome)
             false
-        } else if (!politicaAceita) {
+        } else if (!binder.fragmentAlunosAdicionarCheckBoxAutorizacao.isChecked) {
             shortToast(R.string.toast_salvar_crianca_politica_privacidade)
             false
-        } else {
+        } else if(alunoEdicao != null && !hasEditingAlunoChangedAvatar){
+            shortToast(R.string.toast_update_nao_trocou_avatar)
+            false
+        }else {
             true
         }
-
 
     }
 
     private fun navegarUp() {
         requireActivity().onBackPressed()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        sharedAlunoViewModel.setAlunoEdicao(null)
     }
 
     override fun onClick(p0: View?) {
@@ -151,6 +203,13 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
             binder.fragmentAlunosAdicionarBtnSalvar.id -> {
 
                 lifecycleScope.launch {
+
+                    if (!podeSalvarCrianca()) return@launch
+
+                    alunoEdicao?.let {
+                        updateCrianca()
+                        return@launch
+                    }
                     salvarCrianca()
                 }
 

@@ -3,23 +3,30 @@ package com.brunobterra.androidchallenge.fragments
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.brunobterra.androidchallenge.R
 import com.brunobterra.androidchallenge.adapter.CriancasAdapter
 import com.brunobterra.androidchallenge.application.ChallengeApplication
 import com.brunobterra.androidchallenge.databinding.FragmentAlunosListaBinding
+import com.brunobterra.androidchallenge.model.Crianca
 import com.brunobterra.androidchallenge.repository.AlunoQuery
 import com.brunobterra.androidchallenge.repository.AlunoQueryBuilder
 import com.brunobterra.androidchallenge.viewmodel.CriancaViewModel
 import com.brunobterra.androidchallenge.viewmodel.CriancaViewModelFactory
+import com.brunobterra.androidchallenge.viewmodel.SharedAlunoViewModel
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -31,6 +38,7 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
     private val criancaViewModel: CriancaViewModel by viewModels {
         CriancaViewModelFactory((requireActivity().application as ChallengeApplication).criancaRepo)
     }
+    private val sharedAlunoViewModel : SharedAlunoViewModel by activityViewModels()
 
     //Componentes de layout
     private val binder by lazy {
@@ -42,6 +50,10 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
     //Firestore query
     private val alunoQueryBuilder = AlunoQueryBuilder()
+
+    //RecycleView
+    private lateinit var mAdapter: CriancasAdapter
+    private var shouldScrollToTop = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,20 +81,14 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
         navController = Navigation.findNavController(binder.root)
 
         binder.fragmentAlunosListaFabAdicionar.setOnClickListener(this)
+        binder.fragmentAlunosListaContentSearch.contentAlunosSearchImageFechar.setOnClickListener(this)
 
     }
 
     private fun initRecyclerView() {
 
-        val mAdapter = CriancasAdapter(requireActivity())
-
-        criancaViewModel.changeQuery(alunoQueryBuilder)
-
-        lifecycleScope.launch {
-
-            criancaViewModel.items.collectLatest {
-                mAdapter.submitData(it)
-            }
+        mAdapter = CriancasAdapter(requireActivity()){
+            startEditingFragment(it)
         }
 
         with(binder.fragmentAlunosListaRecyclerCriancas) {
@@ -91,6 +97,43 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
             layoutManager =
                 GridLayoutManager(requireActivity(), 2, GridLayoutManager.VERTICAL, false)
             setHasFixedSize(true)
+        }
+
+        observeAlunosData()
+        addLoadStateListener()
+
+    }
+
+    private fun startEditingFragment(crianca: Crianca) {
+        sharedAlunoViewModel.setAlunoEdicao(crianca)
+        navController.navigate(R.id.action_alunosListaFragment_to_alunosAdicionarFragment)
+    }
+
+    private fun observeAlunosData() {
+        criancaViewModel.changeQuery(alunoQueryBuilder)
+
+        lifecycleScope.launch {
+
+            criancaViewModel.items.collectLatest {
+                mAdapter.submitData(it)
+            }
+        }
+    }
+
+    private fun addLoadStateListener() {
+
+        mAdapter.addLoadStateListener { loadState ->
+
+
+            val isLoading = loadState.source.refresh is LoadState.Loading
+            binder.fragmentAlunosListaProgress.isVisible = isLoading
+
+
+            if (!isLoading && loadState.source.refresh !is LoadState.Error && shouldScrollToTop) {
+                binder.fragmentAlunosListaRecyclerCriancas.layoutManager?.scrollToPosition(0)
+                shouldScrollToTop = false
+                Log.i("Porsche", "addLoadStateListener: refresh")
+            }
         }
     }
 
@@ -115,7 +158,7 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
                     }
 
                     criancaViewModel.changeQuery(alunoQueryBuilder)
-                    binder.fragmentAlunosListaRecyclerCriancas.layoutManager?.scrollToPosition(0)
+                    shouldScrollToTop = true
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -160,6 +203,7 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
                         alunoQueryBuilder.nameQuery = null
                     }
                     criancaViewModel.changeQuery(alunoQueryBuilder)
+                    shouldScrollToTop = true
 
                 }
 
@@ -173,6 +217,11 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
             binder.fragmentAlunosListaFabAdicionar.id -> {
                 navController.navigate(R.id.action_alunosListaFragment_to_alunosAdicionarFragment)
+            }
+
+            binder.fragmentAlunosListaContentSearch.contentAlunosSearchImageFechar.id -> {
+                binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.text =
+                    null
             }
 
         }
