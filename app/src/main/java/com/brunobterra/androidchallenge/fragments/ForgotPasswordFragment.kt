@@ -74,7 +74,7 @@ class ForgotPasswordFragment : Fragment(), View.OnClickListener{
         val email = binder.fragmentForgotPasswordEditEmail.text.toString()
 
         if (!email.matches(Patterns.EMAIL_ADDRESS.toRegex())) {
-            binder.fragmentForgotPasswordEditEmail.error = getString(R.string.edit_text_error_invalid_email)
+            binder.fragmentForgotPasswordInputLayoutEmail.error = getString(R.string.edit_text_error_invalid_email)
             return
         }
 
