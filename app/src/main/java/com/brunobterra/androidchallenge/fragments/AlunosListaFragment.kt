@@ -38,7 +38,7 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
     private val criancaViewModel: CriancaViewModel by viewModels {
         CriancaViewModelFactory((requireActivity().application as ChallengeApplication).criancaRepo)
     }
-    private val sharedAlunoViewModel : SharedAlunoViewModel by activityViewModels()
+    private val sharedAlunoViewModel: SharedAlunoViewModel by activityViewModels()
 
     //Componentes de layout
     private val binder by lazy {
@@ -79,7 +79,9 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
         navController = Navigation.findNavController(binder.root)
 
         binder.fragmentAlunosListaFabAdicionar.setOnClickListener(this)
-        binder.fragmentAlunosListaContentSearch.contentAlunosSearchImageFechar.setOnClickListener(this)
+        binder.fragmentAlunosListaContentSearch.contentAlunosSearchImageFechar.setOnClickListener(
+            this
+        )
 
         observeIfHasToUpdateData()
 
@@ -87,7 +89,7 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
     private fun initRecyclerView() {
 
-        mAdapter = CriancasAdapter(requireActivity()){
+        mAdapter = CriancasAdapter(requireActivity()) {
             startEditingFragment(it)
         }
 
@@ -138,11 +140,11 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun observeIfHasToUpdateData(){
+    private fun observeIfHasToUpdateData() {
 
-        sharedAlunoViewModel.updateList.observe(viewLifecycleOwner){hasToUpdate ->
+        sharedAlunoViewModel.updateList.observe(viewLifecycleOwner) { hasToUpdate ->
 
-            if (hasToUpdate){
+            if (hasToUpdate) {
                 mAdapter.refresh()
                 shouldScrollToTop = true
                 sharedAlunoViewModel.setHasToUpdateList(false)
@@ -205,15 +207,15 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
                     //Significa a caixa de texto foi editada pelo proprio usuario.
-                    if (p2 != p3){
+                    if (p2 != p3) {
 
                         val nome = p0.toString()
 
                         if (nome.length >= 3) {
                             setQueryToNameFilterAndScroll(nome)
 
-                         //Significa que o usuario esta deletando o texto e, quando chegar em 2 chars, nao vai mais ter query por nome.
-                        } else if (nome.length == 2 && p2 > p3){
+                            //Significa que o usuario esta deletando o texto e, quando chegar em 2 chars, nao vai mais ter query por nome.
+                        } else if (nome.length == 2 && p2 > p3) {
                             setQueryToNameFilterAndScroll(null)
 
                         }
@@ -227,7 +229,7 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
     }
 
-    private fun setQueryToNameFilterAndScroll(name:String?){
+    private fun setQueryToNameFilterAndScroll(name: String?) {
         alunoQueryBuilder.nameQuery = name?.lowercase()
         criancaViewModel.changeQuery(alunoQueryBuilder)
         shouldScrollToTop = true
@@ -242,8 +244,8 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
             }
 
             binder.fragmentAlunosListaContentSearch.contentAlunosSearchImageFechar.id -> {
-                binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.text =
-                    null
+                binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.text = null
+                setQueryToNameFilterAndScroll(null)
             }
 
         }
