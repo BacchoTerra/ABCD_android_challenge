@@ -66,7 +66,7 @@ class CriancaRepository {
 
     fun getCriancas(query: Query): LiveData<PagingData<Crianca>> {
 
-        return Pager(config = PagingConfig(10), pagingSourceFactory = {
+        return Pager(config = PagingConfig(QUERY_LIMIT_ALUNOS.toInt()), pagingSourceFactory = {
             AlunosPagingSource(query)
         }).liveData
     }
