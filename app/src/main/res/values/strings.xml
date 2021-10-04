@@ -33,6 +33,13 @@
     <string name="toast_salvar_crianca_preencha_nome">Informe o nome da criança</string>
     <string name="toast_salvar_crianca_politica_privacidade">Confirme com a política de privacidade</string>
     <string name="toast_algo_deu_errado">Ops! Algo deu errado. Tente novamente</string>
-    <string name="args_navigation_alunos_editar_aluno">args_nav_alunos_editar_aluno</string>
+    <string name="args_navigation_forgot_password">args_navigation_forgot_password</string>
     <string name="toast_update_nao_trocou_avatar">Você ainda não trocou seu avatar!</string>
+    <string name="label_forgot_password">Esqueceu a senha?</string>
+    <string name="label_forgot_password_message">Insira o e-mail cadastrado que enviamos um link para cria uma nova senha</string>
+    <string name="hint_label_email">E-mail</string>
+    <string name="btn_label_send_email">Enviar e-mail</string>
+    <string name="edit_text_error_invalid_email">Insira um e-mail válido</string>
+    <string name="toast_check_your_email">Enviado! Verifique seu e-mail</string>
+    <string name="cd_reset_email_header">Resetar senha</string>
 </resources>

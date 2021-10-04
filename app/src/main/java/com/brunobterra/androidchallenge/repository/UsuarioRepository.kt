@@ -68,6 +68,15 @@ class UsuarioRepository {
 
     }
 
+    suspend fun sendPasswordResetEmail(email:String) : Exception?{
+        return try {
+            mAuth.sendPasswordResetEmail(email).await()
+            null
+        }catch (e:Exception){
+            e
+        }
+    }
+
     /**
      * Responsavel por verificar se ja existe um usuario logado.
      *
