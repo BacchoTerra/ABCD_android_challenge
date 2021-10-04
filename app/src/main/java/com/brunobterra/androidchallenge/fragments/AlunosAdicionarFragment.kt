@@ -137,11 +137,10 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
 
                 }
 
+                sharedAlunoViewModel.setHasToUpdateList(true)
                 navegarUp()
 
             }
-
-
     }
 
     private suspend fun updateCrianca() {
@@ -155,6 +154,7 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
                 setLayoutCarregando(false)
                 shortToast(R.string.toast_algo_deu_errado)
             }
+            sharedAlunoViewModel.setHasToUpdateList(true)
             navegarUp()
         }
 

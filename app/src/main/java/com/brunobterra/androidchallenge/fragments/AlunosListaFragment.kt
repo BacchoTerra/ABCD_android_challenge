@@ -72,8 +72,6 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        initFilterByNameOrYear()
-        initQueryByName()
 
     }
 
@@ -82,6 +80,8 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
         binder.fragmentAlunosListaFabAdicionar.setOnClickListener(this)
         binder.fragmentAlunosListaContentSearch.contentAlunosSearchImageFechar.setOnClickListener(this)
+
+        observeIfHasToUpdateData()
 
     }
 
@@ -101,6 +101,8 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
         observeAlunosData()
         addLoadStateListener()
+        initFilterByNameOrYear()
+        initQueryByName()
 
     }
 
@@ -132,9 +134,21 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
             if (!isLoading && loadState.source.refresh !is LoadState.Error && shouldScrollToTop) {
                 binder.fragmentAlunosListaRecyclerCriancas.layoutManager?.scrollToPosition(0)
                 shouldScrollToTop = false
-                Log.i("Porsche", "addLoadStateListener: refresh")
             }
         }
+    }
+
+    private fun observeIfHasToUpdateData(){
+
+        sharedAlunoViewModel.updateList.observe(viewLifecycleOwner){hasToUpdate ->
+
+            if (hasToUpdate){
+                mAdapter.refresh()
+                shouldScrollToTop = true
+                sharedAlunoViewModel.setHasToUpdateList(false)
+            }
+        }
+
     }
 
     private fun initFilterByNameOrYear() {
@@ -186,29 +200,37 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
         binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.addTextChangedListener(
             object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
                 }
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
+                    //Significa a caixa de texto foi editada pelo proprio usuario.
+                    if (p2 != p3){
+
+                        val nome = p0.toString()
+
+                        if (nome.length >= 3) {
+                            setQueryToNameFilterAndScroll(nome)
+
+                         //Significa que o usuario esta deletando o texto e, quando chegar em 2 chars, nao vai mais ter query por nome.
+                        } else if (nome.length == 2 && p2 > p3){
+                            setQueryToNameFilterAndScroll(null)
+
+                        }
+                    }
                 }
 
                 override fun afterTextChanged(p0: Editable?) {
-
-                    val nome = p0.toString()
-
-                    if (nome.length >= 3) {
-                        alunoQueryBuilder.nameQuery = nome.lowercase()
-                    } else {
-                        alunoQueryBuilder.nameQuery = null
-                    }
-                    criancaViewModel.changeQuery(alunoQueryBuilder)
-                    shouldScrollToTop = true
-
                 }
 
             })
 
+    }
+
+    private fun setQueryToNameFilterAndScroll(name:String?){
+        alunoQueryBuilder.nameQuery = name?.lowercase()
+        criancaViewModel.changeQuery(alunoQueryBuilder)
+        shouldScrollToTop = true
     }
 
     override fun onClick(p0: View?) {
