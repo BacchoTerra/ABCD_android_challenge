@@ -36,7 +36,6 @@
         android:id="@+id/fragment_alunos_lista_recyclerCriancas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginEnd="22dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         tools:listitem="@layout/row_criancas" />
 
@@ -56,41 +55,13 @@
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:tint="@color/fab_icon_tint_color" />
 
+    <ProgressBar
+        android:id="@+id/fragment_alunos_lista_progress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        app:layout_anchor="@id/fragment_alunos_lista_recyclerCriancas"
+        app:layout_anchorGravity="center_horizontal"
+        android:layout_height="wrap_content" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <!--
-    <include
-    android:id="@+id/fragment_alunos_lista_contentSearch"
-    layout="@layout/content_alunos_search"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/fragment_alunos_lista_fabAdicionar"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="12dp"
-    android:contentDescription="@string/cd_adicionar_aluno"
-    android:layout_marginBottom="13dp"
-    android:clickable="true"
-    android:focusable="true"
-    android:src="@android:drawable/ic_input_add"
-    app:backgroundTint="@color/fab_tint_color"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:tint="@color/fab_icon_tint_color" />
-
-    <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/fragment_alunos_lista_recyclerCriacas"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:layout_marginEnd="22dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/fragment_alunos_lista_contentSearch"
-    tools:listitem="@layout/row_criancas" />-->

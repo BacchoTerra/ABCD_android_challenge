@@ -8,7 +8,7 @@
         android:id="@+id/alunosListaFragment"
         android:name="com.brunobterra.androidchallenge.fragments.AlunosListaFragment"
         android:label="fragment_alunos_lista"
-        tools:layout="@layout/fragment_alunos_lista" >
+        tools:layout="@layout/fragment_alunos_lista">
         <action
             android:id="@+id/action_alunosListaFragment_to_alunosAdicionarFragment"
             app:destination="@id/alunosAdicionarFragment" />

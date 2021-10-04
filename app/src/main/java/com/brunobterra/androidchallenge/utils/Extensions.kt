@@ -1,6 +1,10 @@
 package com.brunobterra.androidchallenge.utils
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.util.DisplayMetrics
 import android.widget.Toast
+import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 

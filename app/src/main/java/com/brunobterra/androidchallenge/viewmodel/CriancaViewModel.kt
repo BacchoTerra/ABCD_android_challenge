@@ -1,30 +1,41 @@
 package com.brunobterra.androidchallenge.viewmodel
 
 import android.graphics.drawable.Drawable
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.brunobterra.androidchallenge.model.Crianca
+import com.brunobterra.androidchallenge.repository.AlunoQuery
+import com.brunobterra.androidchallenge.repository.AlunoQueryBuilder
 import com.brunobterra.androidchallenge.repository.CriancaRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class CriancaViewModel(private val repo: CriancaRepository) : ViewModel() {
 
-    val ultimaCriancaSalva = MutableLiveData<Crianca?>(null)
+    private val currentQuery = MutableLiveData<AlunoQueryBuilder>(null)
 
+    val items = currentQuery.switchMap { alunoQueryBuilder: AlunoQueryBuilder ->
 
+        repo.getCriancas(repo.defineQuery(alunoQueryBuilder)).cachedIn(viewModelScope)
 
-    fun setUltimaCriancaSalva(crianca:Crianca?){
-        ultimaCriancaSalva.value = crianca
+    }.asFlow()
+
+    fun changeQuery(builder : AlunoQueryBuilder) {
+        currentQuery.value = builder
     }
 
-    fun salvarCrianca(crianca: Crianca, avatar:Drawable) = flow<Exception?> {
-        emit(repo.salvarCrianca(crianca,avatar))
+    fun salvarCrianca(crianca: Crianca, avatar: Drawable) = flow<Exception?> {
+        emit(repo.salvarCrianca(crianca, avatar))
+    }
+
+    fun updateCrianca(docId : String, newAvatar:Drawable) = flow <Exception?>{
+        emit(repo.updateCrianca(docId,newAvatar))
     }
 
 }
 
-class CriancaViewModelFactory(val repo : CriancaRepository) : ViewModelProvider.Factory{
+class CriancaViewModelFactory(val repo: CriancaRepository) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CriancaViewModel::class.java)) {

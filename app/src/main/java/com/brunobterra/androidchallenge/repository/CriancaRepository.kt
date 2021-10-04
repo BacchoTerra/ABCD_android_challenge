@@ -3,10 +3,15 @@ package com.brunobterra.androidchallenge.repository
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import androidx.core.graphics.drawable.toBitmap
+import androidx.lifecycle.LiveData
+import androidx.paging.*
 import com.brunobterra.androidchallenge.model.Crianca
+import com.brunobterra.androidchallenge.source.AlunosPagingSource
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -15,11 +20,16 @@ class CriancaRepository {
 
     companion object {
         const val COLLECTION_CRIANCAS = "collection_criancas"
+        const val QUERY_LIMIT_ALUNOS = 10L
         const val STORAGE_REF_INICIAL = "criancas/avatar/"
     }
 
     private val mFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val mStorage: StorageReference = FirebaseStorage.getInstance().reference
+
+    private val baseAlunoQuery: Query by lazy {
+        mFirestore.collection(COLLECTION_CRIANCAS).limit(QUERY_LIMIT_ALUNOS)
+    }
 
 
     suspend fun salvarCrianca(crianca: Crianca, avatar: Drawable): Exception? {
@@ -40,7 +50,7 @@ class CriancaRepository {
 
     private suspend fun salvarAvatar(drawable: Drawable, docId: String): String {
 
-        val avatarRef = mStorage.child("$STORAGE_REF_INICIAL/$docId/avatar.jpeg")
+        val avatarRef = mStorage.child("$STORAGE_REF_INICIAL/$docId/avatar.png")
         avatarRef.putBytes(getAvatarByteArray(drawable)).await()
         return avatarRef.downloadUrl.await().toString()
     }
@@ -49,9 +59,59 @@ class CriancaRepository {
 
         val bitmap = drawable.toBitmap()
         val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
 
         return baos.toByteArray()
     }
 
+    fun getCriancas(query: Query): LiveData<PagingData<Crianca>> {
+
+        return Pager(config = PagingConfig(QUERY_LIMIT_ALUNOS.toInt()), pagingSourceFactory = {
+            AlunosPagingSource(query)
+        }).liveData
+    }
+
+    suspend fun updateCrianca(docId: String, newAvatar : Drawable): Exception? {
+
+        return try {
+
+            val avatarUrl = salvarAvatar(newAvatar,docId)
+            mFirestore.collection(COLLECTION_CRIANCAS).document(docId).update(Crianca::avatarUrl.name,avatarUrl).await()
+            null
+        } catch (e: Exception) {
+            e
+        }
+    }
+
+    fun defineQuery(builder: AlunoQueryBuilder): Query {
+
+        var definedQuery: Query = baseAlunoQuery
+
+        if (builder.orderBy == AlunoQuery.ORDER_NAME) {
+            definedQuery =
+                baseAlunoQuery.orderBy(Crianca::nomeDePesquisa.name, Query.Direction.ASCENDING)
+
+            builder.nameQuery?.let {
+                definedQuery =
+                    definedQuery.whereGreaterThanOrEqualTo(Crianca::nomeDePesquisa.name, it)
+            }
+
+        } else if (builder.orderBy == AlunoQuery.ORDER_ANO) {
+
+            definedQuery = baseAlunoQuery.orderBy(Crianca::ano.name, Query.Direction.ASCENDING)
+        }
+
+        return definedQuery
+
+    }
+}
+
+data class AlunoQueryBuilder(
+    var orderBy: AlunoQuery = AlunoQuery.ORDER_NAME,
+    var nameQuery: String? = null
+)
+
+enum class AlunoQuery {
+    ORDER_NAME,
+    ORDER_ANO
 }
