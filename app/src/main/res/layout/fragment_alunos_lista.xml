@@ -36,7 +36,6 @@
         android:id="@+id/fragment_alunos_lista_recyclerCriancas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginEnd="22dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         tools:listitem="@layout/row_criancas" />
 

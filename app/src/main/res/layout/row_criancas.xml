@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="22dp"
+    android:layout_gravity="center_horizontal"
     android:layout_marginTop="20dp"
+    android:layout_marginHorizontal="@dimen/alunos_recycler_horizontal_margin"
     android:layout_marginBottom="11dp">
 
     <com.google.android.material.card.MaterialCardView
@@ -27,13 +28,14 @@
 
             <ImageView
                 android:id="@+id/row_crianca_imageAvatar"
-                android:layout_width="126dp"
-                android:layout_height="106dp"
-                android:backgroundTint="@color/card_background_color"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginStart="11dp"
-                android:contentDescription="@string/cd_avatar"
                 android:layout_marginTop="11dp"
                 android:layout_marginEnd="10dp"
+                android:backgroundTint="@color/card_background_color"
+                android:contentDescription="@string/cd_avatar"
+                app:layout_constraintDimensionRatio="H,1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -49,12 +51,12 @@
                 android:layout_marginEnd="2dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                tools:text="Bruno baccho erra"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/row_crianca_imageAvatar"
-                app:layout_constraintTop_toBottomOf="@+id/row_crianca_imageAvatar" />
+                app:layout_constraintTop_toBottomOf="@+id/row_crianca_imageAvatar"
+                tools:text="Bruno baccho erra" />
 
             <TextView
                 android:id="@+id/row_crianca_txtAno"
@@ -63,10 +65,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="14dp"
-                tools:text="1 ano"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/row_crianca_txtNome"
-                app:layout_constraintTop_toBottomOf="@+id/row_crianca_txtNome" />
+                app:layout_constraintTop_toBottomOf="@+id/row_crianca_txtNome"
+                tools:text="1 ano" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

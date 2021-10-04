@@ -18,7 +18,6 @@ import com.brunobterra.androidchallenge.application.ChallengeApplication
 import com.brunobterra.androidchallenge.databinding.FragmentAlunosListaBinding
 import com.brunobterra.androidchallenge.repository.AlunoQuery
 import com.brunobterra.androidchallenge.repository.AlunoQueryBuilder
-import com.brunobterra.androidchallenge.utils.shortToast
 import com.brunobterra.androidchallenge.viewmodel.CriancaViewModel
 import com.brunobterra.androidchallenge.viewmodel.CriancaViewModelFactory
 import com.google.android.material.tabs.TabLayout
@@ -26,7 +25,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class AlunosListaFragment : Fragment(),View.OnClickListener {
+class AlunosListaFragment : Fragment(), View.OnClickListener {
 
     //ViewModel
     private val criancaViewModel: CriancaViewModel by viewModels {
@@ -49,10 +48,11 @@ class AlunosListaFragment : Fragment(),View.OnClickListener {
         super.onCreate(savedInstanceState)
         initRecyclerView()
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View{
+    ): View {
 
         return binder.root
     }
@@ -62,6 +62,7 @@ class AlunosListaFragment : Fragment(),View.OnClickListener {
         init()
         initFilterByNameOrYear()
         initQueryByName()
+
     }
 
     private fun init() {
@@ -84,43 +85,52 @@ class AlunosListaFragment : Fragment(),View.OnClickListener {
             }
         }
 
-        with(binder.fragmentAlunosListaRecyclerCriancas){
+        with(binder.fragmentAlunosListaRecyclerCriancas) {
 
             adapter = mAdapter
-            layoutManager = GridLayoutManager(requireActivity(),2,GridLayoutManager.VERTICAL,false)
+            layoutManager =
+                GridLayoutManager(requireActivity(), 2, GridLayoutManager.VERTICAL, false)
             setHasFixedSize(true)
         }
     }
 
     private fun initFilterByNameOrYear() {
 
-        binder.fragmentAlunosListaContentSearch.contentAlunosSearchTabLayoutFiltrarPor.addOnTabSelectedListener(object:TabLayout.OnTabSelectedListener{
-            override fun onTabSelected(tab: TabLayout.Tab?) {
+        binder.fragmentAlunosListaContentSearch.contentAlunosSearchTabLayoutFiltrarPor.addOnTabSelectedListener(
+            object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
 
-                 if (binder.fragmentAlunosListaContentSearch.contentAlunosSearchTabLayoutFiltrarPor.getTabAt(0)?.isSelected == true){
-                     enableEditName(true)
-                     alunoQueryBuilder.orderBy = AlunoQuery.ORDER_NAME
-                 }else if(binder.fragmentAlunosListaContentSearch.contentAlunosSearchTabLayoutFiltrarPor.getTabAt(1)?.isSelected == true){
-                     enableEditName(false)
-                     alunoQueryBuilder.orderBy = AlunoQuery.ORDER_ANO
-                 }
+                    if (binder.fragmentAlunosListaContentSearch.contentAlunosSearchTabLayoutFiltrarPor.getTabAt(
+                            0
+                        )?.isSelected == true
+                    ) {
+                        enableEditName(true)
+                        alunoQueryBuilder.orderBy = AlunoQuery.ORDER_NAME
+                    } else if (binder.fragmentAlunosListaContentSearch.contentAlunosSearchTabLayoutFiltrarPor.getTabAt(
+                            1
+                        )?.isSelected == true
+                    ) {
+                        enableEditName(false)
+                        alunoQueryBuilder.orderBy = AlunoQuery.ORDER_ANO
+                    }
 
-                criancaViewModel.changeQuery(alunoQueryBuilder)
-            }
+                    criancaViewModel.changeQuery(alunoQueryBuilder)
+                    binder.fragmentAlunosListaRecyclerCriancas.layoutManager?.scrollToPosition(0)
+                }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
 
-            }
+                }
 
-            override fun onTabReselected(tab: TabLayout.Tab?) {
+                override fun onTabReselected(tab: TabLayout.Tab?) {
 
-            }
+                }
 
-        })
+            })
 
     }
 
-    private fun enableEditName(enabled : Boolean) {
+    private fun enableEditName(enabled: Boolean) {
 
         if (!enabled) binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.clearFocus()
 
@@ -130,35 +140,36 @@ class AlunosListaFragment : Fragment(),View.OnClickListener {
 
     private fun initQueryByName() {
 
-        binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.addTextChangedListener(
+            object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-
-                val nome = p0.toString()
-
-                if (nome.length >=3) {
-                    alunoQueryBuilder.nameQuery = nome.lowercase()
-                }else {
-                    alunoQueryBuilder.nameQuery = null
                 }
-                criancaViewModel.changeQuery(alunoQueryBuilder)
 
-            }
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-        })
+                }
+
+                override fun afterTextChanged(p0: Editable?) {
+
+                    val nome = p0.toString()
+
+                    if (nome.length >= 3) {
+                        alunoQueryBuilder.nameQuery = nome.lowercase()
+                    } else {
+                        alunoQueryBuilder.nameQuery = null
+                    }
+                    criancaViewModel.changeQuery(alunoQueryBuilder)
+
+                }
+
+            })
 
     }
 
     override fun onClick(p0: View?) {
 
-        when(p0?.id) {
+        when (p0?.id) {
 
             binder.fragmentAlunosListaFabAdicionar.id -> {
                 navController.navigate(R.id.action_alunosListaFragment_to_alunosAdicionarFragment)
