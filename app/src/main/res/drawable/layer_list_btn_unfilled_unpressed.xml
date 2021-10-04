@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@drawable/shape_btn_shadow" />
+
+    <item
+        android:drawable="@drawable/shape_default_btn_unfilled_background"
+        android:bottom="@dimen/btn_default_elevation"/>
+
+</layer-list>
