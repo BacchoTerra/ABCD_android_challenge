@@ -50,7 +50,7 @@ class CriancaRepository {
 
     private suspend fun salvarAvatar(drawable: Drawable, docId: String): String {
 
-        val avatarRef = mStorage.child("$STORAGE_REF_INICIAL/$docId/avatar.jpeg")
+        val avatarRef = mStorage.child("$STORAGE_REF_INICIAL/$docId/avatar.png")
         avatarRef.putBytes(getAvatarByteArray(drawable)).await()
         return avatarRef.downloadUrl.await().toString()
     }
@@ -59,7 +59,7 @@ class CriancaRepository {
 
         val bitmap = drawable.toBitmap()
         val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
 
         return baos.toByteArray()
     }

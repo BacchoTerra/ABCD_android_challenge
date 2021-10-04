@@ -55,6 +55,14 @@
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:tint="@color/fab_icon_tint_color" />
 
+    <ProgressBar
+        android:id="@+id/fragment_alunos_lista_progress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        app:layout_anchor="@id/fragment_alunos_lista_recyclerCriancas"
+        app:layout_anchorGravity="center_horizontal"
+        android:layout_height="wrap_content" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

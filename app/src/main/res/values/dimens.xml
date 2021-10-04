@@ -32,6 +32,7 @@
     <dimen name="tab_default_corner_radius">22dp</dimen>
 
     <dimen name="alunos_recycler_horizontal_margin">16dp</dimen>
+    <dimen name="alunos_recycler_image_default_radius">16dp</dimen>
 
 
 
