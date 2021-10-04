@@ -15,10 +15,22 @@
             app:destination="@id/mainNavHostFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/mainNavHostFragment"
         android:name="com.brunobterra.androidchallenge.fragments.BtmNavHostFragment"
         android:label="fragment_main_nav_host"
         tools:layout="@layout/fragment_btm_nav_host" />
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.brunobterra.androidchallenge.fragments.ForgotPasswordFragment"
+        android:label="fragment_forgot_password"
+        tools:layout="@layout/fragment_forgot_password" >
+        <argument
+            android:name="@string/args_navigation_forgot_password"
+            app:argType="string" />
+    </fragment>
 </navigation>

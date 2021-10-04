@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -163,6 +164,15 @@ class LoginFragment : Fragment(), View.OnClickListener{
         }
     }
 
+    private fun forgotPassword() {
+
+        val initialEmail = binder.fragmentLoginEditEmail.text.toString()
+
+        navController.navigate(R.id.action_loginFragment_to_forgotPasswordFragment,
+        bundleOf(getString(R.string.args_navigation_forgot_password) to initialEmail))
+
+    }
+
     /**
      * Realiza a troca de fragment para a tela principal somente se a operação de login,
      * registrar usuario, ou caso ja tenha um usuario logado sejam verdadeiras e tenham sucesso.
@@ -179,6 +189,7 @@ class LoginFragment : Fragment(), View.OnClickListener{
         when(p0?.id) {
 
             binder.fragmentLoginBtnLogin.id -> login()
+            binder.fragmentLoginBtnEsqueciSenha.id -> forgotPassword()
 
         }
 

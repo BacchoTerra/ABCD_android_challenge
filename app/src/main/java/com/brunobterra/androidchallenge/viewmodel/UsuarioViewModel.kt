@@ -10,13 +10,17 @@ class UsuarioViewModel(val repo: UsuarioRepository) : ViewModel() {
 
     val mFirebaseUser = repo.getFirebaseUser()
 
-    fun login(email:String,senha:String) = flow<LoginResponse> {
-        emit(repo.login(email,senha))
+    fun login(email: String, senha: String) = flow<LoginResponse> {
+        emit(repo.login(email, senha))
     }
 
-    fun registrarUsuario(email:String,senha:String) = flow<Exception?> {
-        emit(repo.registrarUsuario(email,senha))
+    fun registrarUsuario(email: String, senha: String) = flow<Exception?> {
+        emit(repo.registrarUsuario(email, senha))
     }
+
+    fun sendPasswordResetEmail(email: String) =
+        flow<Exception?> { emit(repo.sendPasswordResetEmail(email)) }
+
 
 }
 

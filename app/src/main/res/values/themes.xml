@@ -55,6 +55,10 @@
         <item name="boxStrokeColor">@color/selector_text_input_layout_outlined</item>
         <item name="endIconTint">@color/selector_text_input_layout_outlined</item>
         <item name="passwordToggleTint">@color/selector_text_input_layout_outlined</item>
+        <item name="boxStrokeErrorColor">@color/edit_text_outlined_error_color</item>
+        <item name="errorTextColor">@color/edit_text_outlined_error_color</item>
+        <item name="errorIconTint">@color/edit_text_outlined_error_color</item>
+
 
     </style>
 
@@ -81,6 +85,10 @@
 
     <style name="Theme.AndroidChallenge.HeaderText2" parent="Theme.AndroidChallenge.HeaderText1">
         <item name="android:textSize">@dimen/text_header_2_default_text_size</item>
+    </style>
+
+    <style name="Theme.AndroidChallenge.MainText" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textColor">@color/text_main_color</item>
     </style>
 
 
