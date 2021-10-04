@@ -20,17 +20,19 @@
 
     <style name="Theme.AndroidChallenge.FilledBtn" parent="Widget.AppCompat.Button">
 
-        <item name="android:background">@drawable/shape_default_btn_filled_background</item>
+        <item name="android:background">@drawable/selector_btn_filled_background</item>
         <item name="android:textAppearance">@style/ButtonTextAppearance</item>
         <item name="android:textColor">@color/btn_filled_text_color</item>
+        <item name="android:stateListAnimator">@null</item>
 
     </style>
 
     <style name="Theme.AndroidChallenge.UnfilledBtn" parent="Widget.AppCompat.Button">
 
-        <item name="android:background">@drawable/shape_default_btn_unfilled_background</item>
+        <item name="android:background">@drawable/selector_btn_unfilled_background</item>
         <item name="android:textAppearance">@style/ButtonTextAppearance</item>
         <item name="android:textColor">@color/btn_unfilled_text_color</item>
+        <item name="android:stateListAnimator">@null</item>
 
     </style>
 

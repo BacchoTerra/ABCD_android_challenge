@@ -40,7 +40,7 @@
     <color name="btn_filled_text_color">@color/on_primary_color</color>
     <color name="btn_unfilled_text_color">#25ABE6</color>
     <color name="btn_unfilled_stroke_color">@color/primary_color</color>
-    <color name="btn_shadow_dark_color">#25ABE6</color>
+    <color name="btn_shadow_default_color">#25ABE6</color>
     <color name="btn_shadow_light_color">@color/primary_color</color>
 
 
