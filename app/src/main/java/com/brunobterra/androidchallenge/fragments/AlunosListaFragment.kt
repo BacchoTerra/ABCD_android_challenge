@@ -3,12 +3,10 @@ package com.brunobterra.androidchallenge.fragments
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -163,13 +161,13 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
                             0
                         )?.isSelected == true
                     ) {
-                        enableEditName(true)
+                        enableEditSearch(true)
                         alunoQueryBuilder.orderBy = AlunoQuery.ORDER_NAME
                     } else if (binder.fragmentAlunosListaContentSearch.contentAlunosSearchTabLayoutFiltrarPor.getTabAt(
                             1
                         )?.isSelected == true
                     ) {
-                        enableEditName(false)
+                        enableEditSearch(false)
                         alunoQueryBuilder.orderBy = AlunoQuery.ORDER_ANO
                     }
 
@@ -189,7 +187,7 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
     }
 
-    private fun enableEditName(enabled: Boolean) {
+    private fun enableEditSearch(enabled: Boolean) {
 
         if (!enabled) binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.clearFocus()
 
@@ -244,8 +242,13 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
             }
 
             binder.fragmentAlunosListaContentSearch.contentAlunosSearchImageFechar.id -> {
-                binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.text = null
-                setQueryToNameFilterAndScroll(null)
+                if (binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.text.toString()
+                        .isNotEmpty()
+                ) {
+                    binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.text =
+                        null
+                    setQueryToNameFilterAndScroll(null)
+                }
             }
 
         }

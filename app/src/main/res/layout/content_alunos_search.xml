@@ -49,6 +49,7 @@
             style="@style/Theme.AndroidChallenge.EditText"
             android:layout_width="match_parent"
             android:inputType="textPersonName"
+            android:imeOptions="actionSearch"
             android:layout_height="wrap_content"
             android:hint="@string/hint_label_pesquisar" />
     </com.google.android.material.textfield.TextInputLayout>
