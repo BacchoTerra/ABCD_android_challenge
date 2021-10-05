@@ -16,14 +16,15 @@ import androidx.navigation.Navigation
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.brunobterra.androidchallenge.R
-import com.brunobterra.androidchallenge.adapter.CriancasAdapter
+import com.brunobterra.androidchallenge.adapter.AlunosAdapter
 import com.brunobterra.androidchallenge.application.ChallengeApplication
 import com.brunobterra.androidchallenge.databinding.FragmentAlunosListaBinding
-import com.brunobterra.androidchallenge.model.Crianca
+import com.brunobterra.androidchallenge.model.Aluno
 import com.brunobterra.androidchallenge.repository.AlunoQuery
 import com.brunobterra.androidchallenge.repository.AlunoQueryBuilder
-import com.brunobterra.androidchallenge.viewmodel.CriancaViewModel
-import com.brunobterra.androidchallenge.viewmodel.CriancaViewModelFactory
+import com.brunobterra.androidchallenge.utils.AlunosNavigationUtils
+import com.brunobterra.androidchallenge.viewmodel.AlunoViewModel
+import com.brunobterra.androidchallenge.viewmodel.AlunoViewModelFactory
 import com.brunobterra.androidchallenge.viewmodel.SharedAlunoViewModel
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.flow.collectLatest
@@ -32,10 +33,18 @@ import kotlinx.coroutines.launch
 
 class AlunosListaFragment : Fragment(), View.OnClickListener {
 
-    //ViewModel
-    private val criancaViewModel: CriancaViewModel by viewModels {
-        CriancaViewModelFactory((requireActivity().application as ChallengeApplication).criancaRepo)
+    companion object{
+
+        const val TAB_POS_ORDENAR_POR_NOME = 0
+        const val TAB_POS_ORDENAR_POR_ANO = 1
+
     }
+
+    //ViewModel
+    private val alunoViewModel: AlunoViewModel by viewModels {
+        AlunoViewModelFactory((requireActivity().application as ChallengeApplication).alunoRepo)
+    }
+    //Usada para comunicação entre listagem e ediçao de alunos.
     private val sharedAlunoViewModel: SharedAlunoViewModel by activityViewModels()
 
     //Componentes de layout
@@ -45,13 +54,14 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
     //Navigation
     lateinit var navController: NavController
+    lateinit var alunosNavigationUtils: AlunosNavigationUtils
 
     //Firestore query
     private val alunoQueryBuilder = AlunoQueryBuilder()
 
     //RecycleView
-    private lateinit var mAdapter: CriancasAdapter
-    private var shouldScrollToTop = false
+    private lateinit var mAdapter: AlunosAdapter
+    private var deveScrollarParaOInicio = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,25 +83,33 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
     }
 
+    /**
+     * Faz todas as operação necessárias para o funcionamento da UI do fragment.
+     */
     private fun init() {
         navController = Navigation.findNavController(binder.root)
+        alunosNavigationUtils = AlunosNavigationUtils(navController)
 
         binder.fragmentAlunosListaFabAdicionar.setOnClickListener(this)
-        binder.fragmentAlunosListaContentSearch.contentAlunosSearchImageFechar.setOnClickListener(
+        binder.fragmentAlunosListaContentPesquisar.contentPesquisarAlunosImageFechar.setOnClickListener(
             this
         )
 
-        observeIfHasToUpdateData()
+        observarSeDeveAtualizarDados()
 
     }
 
+    /**
+     * Instancia o adapter de display de alunos e vincula a recyclerView com todos os objetos necessarios.
+     * Também é responsável por chamar todos os métodos relacionados com a recyclerView.
+     */
     private fun initRecyclerView() {
 
-        mAdapter = CriancasAdapter(requireActivity()) {
-            startEditingFragment(it)
+        mAdapter = AlunosAdapter(requireActivity()) {
+            iniciarFragmentDeEdicaoDeAluno(it)
         }
 
-        with(binder.fragmentAlunosListaRecyclerCriancas) {
+        with(binder.fragmentAlunosListaRecyclerAlunos) {
 
             adapter = mAdapter
             layoutManager =
@@ -99,80 +117,109 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
             setHasFixedSize(true)
         }
 
-        observeAlunosData()
-        addLoadStateListener()
-        initFilterByNameOrYear()
-        initQueryByName()
+        coletarAlunos()
+        adicionarLoadStateListener()
+        iniciarOrdenarPorNomeOuAno()
+        iniciarFiltragemPorNome()
 
     }
 
-    private fun startEditingFragment(crianca: Crianca) {
-        sharedAlunoViewModel.setAlunoEdicao(crianca)
-        navController.navigate(R.id.action_alunosListaFragment_to_alunosAdicionarFragment)
+    /**
+     * Compartilha um objeto de aluno com uma sharedViewModel e navega para o fragment de edição de ALuno.
+     *
+     * @param aluno o objeto de aluno alvo da edição.
+     */
+    private fun iniciarFragmentDeEdicaoDeAluno(aluno: Aluno) {
+        sharedAlunoViewModel.setAlunoEdicao(aluno)
+        alunosNavigationUtils.navegarParaCriadAlunosFragment()
     }
 
-    private fun observeAlunosData() {
-        criancaViewModel.changeQuery(alunoQueryBuilder)
+    /**
+     * Lança uma coroutine para início do processo de coleta de dados paginados de Alunos do firestore
+     */
+    private fun coletarAlunos() {
+        alunoViewModel.trocarQuery(alunoQueryBuilder)
 
         lifecycleScope.launch {
 
-            criancaViewModel.items.collectLatest {
+            alunoViewModel.alunos.collectLatest {
                 mAdapter.submitData(it)
             }
         }
     }
 
-    private fun addLoadStateListener() {
+    /**
+     * Adiciona informações de Loading da busca de dados de Alunos para notificar o usuário do estado atual da busca.
+     */
+    private fun adicionarLoadStateListener() {
 
         mAdapter.addLoadStateListener { loadState ->
 
 
-            val isLoading = loadState.source.refresh is LoadState.Loading
-            binder.fragmentAlunosListaProgress.isVisible = isLoading
+            val carregando = loadState.source.refresh is LoadState.Loading
+            binder.fragmentAlunosListaProgress.isVisible = carregando
 
 
-            if (!isLoading && loadState.source.refresh !is LoadState.Error && shouldScrollToTop) {
-                binder.fragmentAlunosListaRecyclerCriancas.layoutManager?.scrollToPosition(0)
-                shouldScrollToTop = false
+            if (!carregando && loadState.source.refresh !is LoadState.Error && deveScrollarParaOInicio) {
+                binder.fragmentAlunosListaRecyclerAlunos.layoutManager?.scrollToPosition(0)
+                deveScrollarParaOInicio = false
             }
+
+            //AlunosPagingSource retorna um ArrayOutOfBoundsException quando a pesquisa retorna 0 resultados.
+            if (!carregando && loadState.source.refresh is LoadState.Error) {
+                if ((loadState.source.refresh as LoadState.Error).error is ArrayIndexOutOfBoundsException){
+                    binder.fragmentAlunosListaTxtSemResultados.isVisible = true
+                    binder.fragmentAlunosListaRecyclerAlunos.isVisible = false
+                }
+            }else{
+                binder.fragmentAlunosListaTxtSemResultados.isVisible = false
+                binder.fragmentAlunosListaRecyclerAlunos.isVisible = true
+            }
+
         }
     }
 
-    private fun observeIfHasToUpdateData() {
+    /**
+     * Observa constantemente uma SharedViewModel para detectar se há alguma alteração local que requer atualização dos dados obtidos no firestore.
+     */
+    private fun observarSeDeveAtualizarDados() {
 
-        sharedAlunoViewModel.updateList.observe(viewLifecycleOwner) { hasToUpdate ->
+        sharedAlunoViewModel.deveAtualizarDados.observe(viewLifecycleOwner) { deveAtualizar ->
 
-            if (hasToUpdate) {
+            if (deveAtualizar) {
                 mAdapter.refresh()
-                shouldScrollToTop = true
-                sharedAlunoViewModel.setHasToUpdateList(false)
+                deveScrollarParaOInicio = true
+                sharedAlunoViewModel.setDeveAtualizarDados(false)
             }
         }
 
     }
 
-    private fun initFilterByNameOrYear() {
+    /**
+     * Contém toda a lógica para criar Firestore queries que ordenam os dados por nome ou ano.
+     */
+    private fun iniciarOrdenarPorNomeOuAno() {
 
-        binder.fragmentAlunosListaContentSearch.contentAlunosSearchTabLayoutFiltrarPor.addOnTabSelectedListener(
+        binder.fragmentAlunosListaContentPesquisar.contentPesquisarAlunosTabLayoutFiltrarPor.addOnTabSelectedListener(
             object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
 
-                    if (binder.fragmentAlunosListaContentSearch.contentAlunosSearchTabLayoutFiltrarPor.getTabAt(
-                            0
+                    if (binder.fragmentAlunosListaContentPesquisar.contentPesquisarAlunosTabLayoutFiltrarPor.getTabAt(
+                            TAB_POS_ORDENAR_POR_NOME
                         )?.isSelected == true
                     ) {
-                        enableEditSearch(true)
+                        habilitarCaixaDeTextoDePesquisa(true)
                         alunoQueryBuilder.orderBy = AlunoQuery.ORDER_NAME
-                    } else if (binder.fragmentAlunosListaContentSearch.contentAlunosSearchTabLayoutFiltrarPor.getTabAt(
-                            1
+                    } else if (binder.fragmentAlunosListaContentPesquisar.contentPesquisarAlunosTabLayoutFiltrarPor.getTabAt(
+                            TAB_POS_ORDENAR_POR_ANO
                         )?.isSelected == true
                     ) {
-                        enableEditSearch(false)
+                        habilitarCaixaDeTextoDePesquisa(false)
                         alunoQueryBuilder.orderBy = AlunoQuery.ORDER_ANO
                     }
 
-                    criancaViewModel.changeQuery(alunoQueryBuilder)
-                    shouldScrollToTop = true
+                    alunoViewModel.trocarQuery(alunoQueryBuilder)
+                    deveScrollarParaOInicio = true
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -187,17 +234,26 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
     }
 
-    private fun enableEditSearch(enabled: Boolean) {
+    /**
+     * A caixa de texto de pesquisa é habilitada por padrão. Porém esete método vai desabilita-la quando o usuário decidir
+     * ordenar os dados por ano ao invés de nome.
+     *
+     * @param habilitar boolean que controla se a caixa de texto está habilitada para ediçao.
+     */
+    private fun habilitarCaixaDeTextoDePesquisa(habilitar: Boolean) {
 
-        if (!enabled) binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.clearFocus()
+        if (!habilitar) binder.fragmentAlunosListaContentPesquisar.contentPesquisarAlunosEditPesquisa.clearFocus()
 
-        binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.isEnabled = enabled
+        binder.fragmentAlunosListaContentPesquisar.contentPesquisarAlunosEditPesquisa.isEnabled = habilitar
 
     }
 
-    private fun initQueryByName() {
+    /**
+     * Contém toda a lógica para criar Firestore queries que ordenam os dados por nome ou ano.
+     */
+    private fun iniciarFiltragemPorNome() {
 
-        binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.addTextChangedListener(
+        binder.fragmentAlunosListaContentPesquisar.contentPesquisarAlunosEditPesquisa.addTextChangedListener(
             object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 }
@@ -210,11 +266,11 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
                         val nome = p0.toString()
 
                         if (nome.length >= 3) {
-                            setQueryToNameFilterAndScroll(nome)
+                            setQueryParaFiltrarPorNome(nome)
 
                             //Significa que o usuario esta deletando o texto e, quando chegar em 2 chars, nao vai mais ter query por nome.
                         } else if (nome.length == 2 && p2 > p3) {
-                            setQueryToNameFilterAndScroll(null)
+                            setQueryParaFiltrarPorNome(null)
 
                         }
                     }
@@ -227,10 +283,16 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
     }
 
-    private fun setQueryToNameFilterAndScroll(name: String?) {
+    /**
+     * Se o usuário alterar os dados da caixa de texto de pesquisa de forma que permita uma query, este método sera chamado para gerar uma nova firestore
+     * query com os novos dados de filtro.
+     *
+     * @see iniciarFiltragemPorNome
+     */
+    private fun setQueryParaFiltrarPorNome(name: String?) {
         alunoQueryBuilder.nameQuery = name?.lowercase()
-        criancaViewModel.changeQuery(alunoQueryBuilder)
-        shouldScrollToTop = true
+        alunoViewModel.trocarQuery(alunoQueryBuilder)
+        deveScrollarParaOInicio = true
     }
 
     override fun onClick(p0: View?) {
@@ -238,16 +300,16 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
         when (p0?.id) {
 
             binder.fragmentAlunosListaFabAdicionar.id -> {
-                navController.navigate(R.id.action_alunosListaFragment_to_alunosAdicionarFragment)
+                alunosNavigationUtils.navegarParaCriadAlunosFragment()
             }
 
-            binder.fragmentAlunosListaContentSearch.contentAlunosSearchImageFechar.id -> {
-                if (binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.text.toString()
+            binder.fragmentAlunosListaContentPesquisar.contentPesquisarAlunosImageFechar.id -> {
+                if (binder.fragmentAlunosListaContentPesquisar.contentPesquisarAlunosEditPesquisa.text.toString()
                         .isNotEmpty()
                 ) {
-                    binder.fragmentAlunosListaContentSearch.contentAlunosSearchEditPesquisa.text =
+                    binder.fragmentAlunosListaContentPesquisar.contentPesquisarAlunosEditPesquisa.text =
                         null
-                    setQueryToNameFilterAndScroll(null)
+                    setQueryParaFiltrarPorNome(null)
                 }
             }
 

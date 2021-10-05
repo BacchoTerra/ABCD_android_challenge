@@ -5,15 +5,16 @@
     android:layout_width="match_parent"
     android:background="@color/toolbar_background_color"
     android:layout_height="wrap_content"
-    android:paddingBottom="18dp">
+    android:paddingBottom="15dp">
 
     <ImageView
-        android:id="@+id/content_adicionar_aluno_custom_toolbar_imageBack"
+        android:id="@+id/content_adicionar_aluno_custom_toolbar_imageVoltar"
         android:layout_width="wrap_content"
         app:tint="@color/image_icon_tint_color"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="18dp"
+        android:padding="3dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
@@ -25,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:text="@string/label_toolbar_title_adicionar_aluno"
-        app:layout_constraintBottom_toBottomOf="@+id/content_adicionar_aluno_custom_toolbar_imageBack"
-        app:layout_constraintStart_toEndOf="@+id/content_adicionar_aluno_custom_toolbar_imageBack"
-        app:layout_constraintTop_toTopOf="@+id/content_adicionar_aluno_custom_toolbar_imageBack" />
+        app:layout_constraintBottom_toBottomOf="@+id/content_adicionar_aluno_custom_toolbar_imageVoltar"
+        app:layout_constraintStart_toEndOf="@+id/content_adicionar_aluno_custom_toolbar_imageVoltar"
+        app:layout_constraintTop_toTopOf="@+id/content_adicionar_aluno_custom_toolbar_imageVoltar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

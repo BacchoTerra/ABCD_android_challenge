@@ -16,6 +16,7 @@
 
     <color name="card_background_color">#FFFFFF</color>
     <color name="card_stroke_color">#E1E1E1</color>
+    <color name="card_shadow_color">#E3E3E3</color>
 
     <color name="image_icon_tint_color">@color/primary_color</color>
 
@@ -27,6 +28,7 @@
     <color name="edit_text_outlined_hint_active_color">@color/primary_color</color>
     <color name="edit_text_outlined_hint_inactive_color">#C3C3C3</color>
     <color name="edit_text_outlined_error_color">#B00020</color>
+    <color name="edit_text_default_hint_color">#808080</color>
 
 
     <color name="btm_nav_background_color">#FFFFFF</color>

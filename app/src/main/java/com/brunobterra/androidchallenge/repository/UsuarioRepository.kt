@@ -20,7 +20,9 @@ class UsuarioRepository {
      * @param senha senha do usuário.
      *
      * @return LoginResponse contendo uma exception (caso a operação de login tenha falhado),
-     * e um Boolen informando se é um usuario não registrado previamente.
+     * e um Boolan informando se é um usuario não registrado previamente.
+     *
+     * @author Bruno B. Terra
      */
     suspend fun login(email: String, senha: String): LoginResponse {
 
@@ -68,7 +70,13 @@ class UsuarioRepository {
 
     }
 
-    suspend fun sendPasswordResetEmail(email:String) : Exception?{
+    /**
+     * Envia uma email de reset de senha para o usuário cadastrado com email e senha no FirebaseAuhth.
+     *
+     * @param email o email para qual deve ser encaminhado o email.
+     * @return uma Exception? caso o envio tenha falhado. Null caso contário.
+     */
+    suspend fun enviarEmailDeResetDeSenha(email:String) : Exception?{
         return try {
             mAuth.sendPasswordResetEmail(email).await()
             null
@@ -88,5 +96,7 @@ class UsuarioRepository {
 
 /**
  * Classe model responsavel pelo retorno de informações de operação de login.
+ *
+ * @author Bruno B. Terra
  */
 data class LoginResponse(val exception: Exception?, val novoUsuario: Boolean = false)

@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.brunobterra.androidchallenge.R
 import com.brunobterra.androidchallenge.databinding.FragmentBtmNavHostBinding
+import com.brunobterra.androidchallenge.utils.BtmNavNavigationUtils
 
 
 class BtmNavHostFragment : Fragment() {
@@ -30,6 +30,7 @@ class BtmNavHostFragment : Fragment() {
 
     //NavigationController
     private lateinit var navController : NavController
+    private lateinit var btmNavNavHelper : BtmNavNavigationUtils
 
 
     override fun onCreateView(
@@ -48,29 +49,32 @@ class BtmNavHostFragment : Fragment() {
 
     }
 
+    /**
+     * Instancia um navController para realizar navegação pelo bottomNav;
+     */
     private fun inicialNavController() {
         val navHostFragment = childFragmentManager.findFragmentById(binder.fragmentMainNavHostFragmentContainer.id) as NavHostFragment
         navController = navHostFragment.navController
+        btmNavNavHelper = BtmNavNavigationUtils(navController)
+
     }
 
+    /**
+     * Controla toda a lógica de navegação do BottomNavView.
+     */
     private fun iniciarBtmNavNavigation() {
 
         binder.fragmentMainNavHostBtmNavigation.setNavigationChangeListener { view, position ->
 
             when(position) {
 
-                BTM_NAV_INICIO_POS -> navegarParaItem(R.id.menu_main_nav_host_principal)
-                BTM_NAV_ALUNO_POS -> navegarParaItem(R.id.menu_main_nav_host_aluno)
-                BTM_NAV_AJUDA_POS -> navegarParaItem(R.id.menu_main_nav_host_informacoes)
-                BTM_NAV_CONFIG_POS -> navegarParaItem(R.id.menu_main_nav_host_configuracoes)
+                BTM_NAV_INICIO_POS -> btmNavNavHelper.navegarParaHome()
+                BTM_NAV_ALUNO_POS -> btmNavNavHelper.navegarParaAlunos()
+                BTM_NAV_AJUDA_POS -> btmNavNavHelper.navegarParaAjuda()
+                BTM_NAV_CONFIG_POS ->btmNavNavHelper.navegarParaConfig()
 
             }
         }
-    }
-
-    private fun navegarParaItem(@IdRes resId:Int ){
-        navController.popBackStack()
-        navController.navigate(resId)
     }
 
 }

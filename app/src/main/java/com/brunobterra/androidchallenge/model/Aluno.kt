@@ -1,6 +1,11 @@
 package com.brunobterra.androidchallenge.model
 
-data class Crianca(
+/**
+ * Classe model base do projeto. Ao instanciar programaticamente, é recomendado definir apenas o atributo `nome`.
+ *
+ *@author Bruno B. Terra
+ */
+data class Aluno(
     val nome: String = "Bruno",
     val nomeDePesquisa: String = nome.lowercase(),
     val ano: Int = 1,

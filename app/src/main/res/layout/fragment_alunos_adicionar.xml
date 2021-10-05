@@ -7,13 +7,13 @@
     tools:context=".fragments.AlunosAdicionarFragment">
 
     <include
-        layout="@layout/content_adicionar_aluno_custom_toolbar"
         android:id="@+id/fragment_alunos_adicionar_contentCustomToolbar"
+        layout="@layout/content_adicionar_aluno_custom_toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/fragment_alunos_adicionar_inputLayoutNome"
@@ -32,10 +32,10 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fragment_alunos_adicionar_editNome"
             style="@style/Theme.AndroidChallenge.EditText"
-            android:inputType="textPersonName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_label_nome" />
+            android:hint="@string/hint_label_nome"
+            android:inputType="textPersonName" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <ImageView
@@ -58,22 +58,24 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="71dp"
         android:layout_marginTop="15dp"
-        android:textAppearance="@style/Theme.AndroidChallenge.HeaderText1"
         android:layout_marginEnd="71dp"
         android:text="@string/btn_label_mudar_avatar"
+        android:textAppearance="@style/Theme.AndroidChallenge.HeaderText1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_alunos_adicionar_imageAvatar" />
 
     <CheckBox
         android:id="@+id/fragment_alunos_adicionar_checkBoxAutorizacao"
+        style="@style/Theme.AndroidChallenge.CheckBox"
         android:layout_width="0dp"
+        android:textAppearance="@style/CheckBoxTextAppearance"
         android:layout_height="wrap_content"
+        android:textColor="@color/check_box_text_color"
         android:layout_marginStart="24dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="24dp"
         android:text="@string/chk_box_label_autoriza_coleta_dados"
-        style="@style/Theme.AndroidChallenge.CheckBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_alunos_adicionar_btnMudarAvatar" />
