@@ -6,4 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ConfiguracoesFragment">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Theme.AndroidChallenge.HeaderText1"
+        android:text="@string/label_config"
+        android:layout_margin="16dp"/>
+
 </FrameLayout>
