@@ -30,13 +30,13 @@
     <string name="toast_login_preencha_dados">Preencha os dois campos</string>
     <string name="cd_avatar">Avatar</string>
     <string name="label_aluno_ano">%1$dº ano</string>
-    <string name="toast_salvar_crianca_preencha_nome">Informe o nome da criança</string>
+    <string name="toast_salvar_crianca_preencha_nome">Informe o nome do aluno</string>
     <string name="toast_salvar_crianca_politica_privacidade">Confirme com a política de privacidade</string>
     <string name="toast_algo_deu_errado">Ops! Algo deu errado. Tente novamente</string>
     <string name="args_navigation_esqueci_senha">args_navigation_esqueci_senha</string>
     <string name="toast_update_nao_trocou_avatar">Você ainda não trocou seu avatar!</string>
     <string name="label_esqueci_senha">Esqueceu a senha?</string>
-    <string name="label_mensagem_esqueci_senha">Insira o e-mail cadastrado que enviamos um link para cria uma nova senha</string>
+    <string name="label_mensagem_esqueci_senha">Insira o e-mail cadastrado que enviamos um link para criar uma nova senha</string>
     <string name="hint_label_email">E-mail</string>
     <string name="btn_label_enviar_email">Enviar e-mail</string>
     <string name="edit_text_erro_email_invalido">Insira um e-mail válido</string>
@@ -47,5 +47,5 @@
     <string name="label_config">Configurações</string>
     <string name="label_ajuda">Ajuda</string>
     <string name="label_bem_vindo">Bem vindo!</string>
-    <string name="label_bem_vindo_mensagem">Agora que voce está logado você pode utilizar o app o quanto quiser ;)</string>
+    <string name="label_bem_vindo_mensagem">Agora que você está logado, pode utilizar o app o quanto quiser ;)</string>
 </resources>
