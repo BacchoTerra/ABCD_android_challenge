@@ -42,4 +42,5 @@
     <string name="edit_text_error_invalid_email">Insira um e-mail válido</string>
     <string name="toast_check_your_email">Enviado! Verifique seu e-mail</string>
     <string name="cd_reset_email_header">Resetar senha</string>
+    <string name="label_no_search_results">Nenhum resultado para a busca</string>
 </resources>

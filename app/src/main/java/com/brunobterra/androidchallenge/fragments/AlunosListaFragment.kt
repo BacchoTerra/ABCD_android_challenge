@@ -135,6 +135,18 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
                 binder.fragmentAlunosListaRecyclerCriancas.layoutManager?.scrollToPosition(0)
                 shouldScrollToTop = false
             }
+
+            //AlunosPagingSource retorna um ArrayOutOfBoundsException quando a pesquisa retorna 0 resultados.
+            if (!isLoading && loadState.source.refresh is LoadState.Error) {
+                if ((loadState.source.refresh as LoadState.Error).error is ArrayIndexOutOfBoundsException){
+                    binder.fragmentAlunosListaTxtNoResult.isVisible = true
+                    binder.fragmentAlunosListaRecyclerCriancas.isVisible = false
+                }
+            }else{
+                binder.fragmentAlunosListaTxtNoResult.isVisible = false
+                binder.fragmentAlunosListaRecyclerCriancas.isVisible = true
+            }
+
         }
     }
 
