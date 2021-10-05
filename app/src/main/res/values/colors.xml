@@ -28,6 +28,7 @@
     <color name="edit_text_outlined_hint_active_color">@color/primary_color</color>
     <color name="edit_text_outlined_hint_inactive_color">#C3C3C3</color>
     <color name="edit_text_outlined_error_color">#B00020</color>
+    <color name="edit_text_default_hint_color">#808080</color>
 
 
     <color name="btm_nav_background_color">#FFFFFF</color>
