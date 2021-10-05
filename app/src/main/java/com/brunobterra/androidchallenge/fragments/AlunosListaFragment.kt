@@ -43,6 +43,7 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
     private val alunoViewModel: AlunoViewModel by viewModels {
         AlunoViewModelFactory((requireActivity().application as ChallengeApplication).alunoRepo)
     }
+    //Usada para comunicação entre listagem e ediçao de alunos.
     private val sharedAlunoViewModel: SharedAlunoViewModel by activityViewModels()
 
     //Componentes de layout
@@ -80,6 +81,9 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
     }
 
+    /**
+     * Faz todas as operação necessárias para o funcionamento da UI do fragment.
+     */
     private fun init() {
         navController = Navigation.findNavController(binder.root)
 
@@ -92,6 +96,10 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
     }
 
+    /**
+     * Instancia o adapter de display de alunos e vincula a recyclerView com todos os objetos necessarios.
+     * Também é responsável por chamar todos os métodos relacionados com a recyclerView.
+     */
     private fun initRecyclerView() {
 
         mAdapter = AlunosAdapter(requireActivity()) {
@@ -113,11 +121,19 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
     }
 
+    /**
+     * Compartilha um objeto de aluno com uma sharedViewModel e navega para o fragment de edição de ALuno.
+     *
+     * @param aluno o objeto de aluno alvo da edição.
+     */
     private fun iniciarFragmentDeEdicaoDeAluno(aluno: Aluno) {
         sharedAlunoViewModel.setAlunoEdicao(aluno)
         navController.navigate(R.id.action_alunosListaFragment_to_alunosAdicionarFragment)
     }
 
+    /**
+     * Lança uma coroutine para início do processo de coleta de dados paginados de Alunos do firestore
+     */
     private fun coletarAlunos() {
         alunoViewModel.trocarQuery(alunoQueryBuilder)
 
@@ -129,6 +145,9 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    /**
+     * Adiciona informações de Loading da busca de dados de Alunos para notificar o usuário do estado atual da busca.
+     */
     private fun adicionarLoadStateListener() {
 
         mAdapter.addLoadStateListener { loadState ->
@@ -157,6 +176,9 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    /**
+     * Observa constantemente uma SharedViewModel para detectar se há alguma alteração local que requer atualização dos dados obtidos no firestore.
+     */
     private fun observarSeDeveAtualizarDados() {
 
         sharedAlunoViewModel.deveAtualizarDados.observe(viewLifecycleOwner) { deveAtualizar ->
@@ -170,6 +192,9 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
     }
 
+    /**
+     * Contém toda a lógica para criar Firestore queries que ordenam os dados por nome ou ano.
+     */
     private fun iniciarOrdenarPorNomeOuAno() {
 
         binder.fragmentAlunosListaContentPesquisar.contentPesquisarAlunosTabLayoutFiltrarPor.addOnTabSelectedListener(
@@ -206,6 +231,12 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
     }
 
+    /**
+     * A caixa de texto de pesquisa é habilitada por padrão. Porém esete método vai desabilita-la quando o usuário decidir
+     * ordenar os dados por ano ao invés de nome.
+     *
+     * @param habilitar boolean que controla se a caixa de texto está habilitada para ediçao.
+     */
     private fun habilitarCaixaDeTextoDePesquisa(habilitar: Boolean) {
 
         if (!habilitar) binder.fragmentAlunosListaContentPesquisar.contentPesquisarAlunosEditPesquisa.clearFocus()
@@ -214,6 +245,9 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
     }
 
+    /**
+     * Contém toda a lógica para criar Firestore queries que ordenam os dados por nome ou ano.
+     */
     private fun iniciarFiltragemPorNome() {
 
         binder.fragmentAlunosListaContentPesquisar.contentPesquisarAlunosEditPesquisa.addTextChangedListener(
@@ -246,6 +280,12 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
     }
 
+    /**
+     * Se o usuário alterar os dados da caixa de texto de pesquisa de forma que permita uma query, este método sera chamado para gerar uma nova firestore
+     * query com os novos dados de filtro.
+     *
+     * @see iniciarFiltragemPorNome
+     */
     private fun setQueryParaFiltrarPorNome(name: String?) {
         alunoQueryBuilder.nameQuery = name?.lowercase()
         alunoViewModel.trocarQuery(alunoQueryBuilder)

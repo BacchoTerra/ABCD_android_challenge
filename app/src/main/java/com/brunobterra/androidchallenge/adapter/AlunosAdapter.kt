@@ -11,6 +11,14 @@ import com.brunobterra.androidchallenge.databinding.RowAlunosBinding
 import com.brunobterra.androidchallenge.model.Aluno
 import com.bumptech.glide.Glide
 
+/**
+ * Adapter base da paginação de ALunos proveniente do firestore
+ *
+ * @param context o android context
+ * @param callback, uma function que sera usava no click de cada item.
+ *
+ * @author Bruno B. Terra
+ */
 class AlunosAdapter(val context: Context, val callback : (Aluno) -> Unit) :
     PagingDataAdapter<Aluno, AlunosAdapter.AlunosViewHolder>(alunoModelComparador) {
 
@@ -29,6 +37,11 @@ class AlunosAdapter(val context: Context, val callback : (Aluno) -> Unit) :
     inner class AlunosViewHolder(val binder: RowAlunosBinding) :
         RecyclerView.ViewHolder(binder.root) {
 
+        /**
+         * Vincula os dados do Aluno ao layout atual
+         *
+         * @param aluno aluno do row atual.
+         */
         fun vincularInformacoes(aluno: Aluno) {
             binder.rowAlunosTxtNome.text = aluno.nome
             binder.rowAlunosTxtAno.text = context.getString(R.string.label_aluno_ano, aluno.ano)

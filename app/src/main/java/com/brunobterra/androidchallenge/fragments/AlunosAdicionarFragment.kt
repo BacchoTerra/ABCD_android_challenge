@@ -34,6 +34,7 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
     private val alunoViewModel: AlunoViewModel by viewModels {
         AlunoViewModelFactory((requireActivity().application as ChallengeApplication).alunoRepo)
     }
+    //Usada para comunicação entre listagem e ediçao de alunos.
     private val sharedAlunoViewModel: SharedAlunoViewModel by activityViewModels()
 
     //Lista de avatares
@@ -65,6 +66,9 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
         init()
     }
 
+    /**
+     * Faz todas as operação necessárias para o funcionamento da UI do fragment.
+     */
     private fun init() {
 
         binder.fragmentAlunosAdicionarContentCustomToolbar.contentAdicionarAlunoCustomToolbarImageVoltar.setOnClickListener(this)
@@ -78,6 +82,11 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
 
     }
 
+    /**
+     * Caso esse fragment seja proveniente de uma edição de Aluno ao invés de criação, esse método
+     * acessa uma sharedViewModel para buscar o objeto de Aluno alvo da edição
+     *
+     */
     private fun recuperarAlunoEmEdicao() {
 
         sharedAlunoViewModel.alunoEmEdicao.observe(viewLifecycleOwner) {
@@ -86,6 +95,12 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    /**
+     * No caso de edição, esse método vincular os dados do objeto de Aluno com o UI.Permitindo a edição do avatar do mesmo.
+     * Caso não esteja editando, este método não apresenta função nenhuma.
+     *
+     * @see mudarAvatar
+     */
     private fun vincularLayoutComAlunoEmEdicao() {
 
         alunoEmEdicao?.let {
@@ -98,6 +113,9 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    /**
+     * Identifica qual avatar está atualmente como atual, e muda a posição da lista de avatares para definir um novo avatar atual para o Aluno.
+     */
     private fun mudarAvatar() {
 
         posAvatarAtual = if (posAvatarAtual == listaDeAvatares.lastIndex) 0 else ++posAvatarAtual
@@ -111,6 +129,12 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
 
     }
 
+    /**
+     * Após a inserção dos dados obrigatórios, este método vai criar o processo de salvamento do objeto de Aluno no Firestore.
+     * Caso tenha sucesso, o fragment será fechado, caso não, o fragment fornecerá a opçao de tentar novamente.
+     *
+     * @see setLayoutCarregando
+     */
     private suspend fun salvarAluno() {
 
         val nome = binder.fragmentAlunosAdicionarEditNome.text.toString()
@@ -137,6 +161,12 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
             }
     }
 
+    /**
+     * Se a instância de alunoEmEdição não for nula, este método iniciara o processo de update de avatar do objeto
+     * * Caso tenha sucesso, o fragment será fechado, caso não, o fragment fornecerá a opçao de tentar novamente.
+     *
+     * @see setLayoutCarregando
+     */
     private suspend fun updateAluno() {
 
         val newAvatar = ContextCompat.getDrawable(requireContext(), avatarAtual)!!
@@ -154,6 +184,10 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
 
     }
 
+    /**
+     * Define o estado atual do layout para carregando ou não carregando. Só sera colocado em estado de não carregando no inicio do fragment,
+     * ou quando há uma falha no processo de backend.
+     */
     private fun setLayoutCarregando(carregando: Boolean) {
 
         binder.fragmentAlunosAdicionarProgressSalvando.isVisible = carregando
@@ -163,6 +197,11 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
 
     }
 
+    /**
+     * Faz a checagem de daddos de layout para verificar se todos os dados obrigatórios foram preenchidos.
+     *
+     * @return `true` se tudo estiver preenchido corretamente, `false` caso contário.
+     */
     private fun podeSalvarAluno(): Boolean {
 
         return if (binder.fragmentAlunosAdicionarEditNome.text.toString().isBlank()) {
@@ -180,6 +219,9 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
 
     }
 
+    /**
+     * Chama o onBackPressed() da activity host para fechar o fragment dentro do navigation scope.
+     */
     private fun navegarUp() {
         requireActivity().onBackPressed()
     }

@@ -21,22 +21,23 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class EsqueciSenhaFragment : Fragment(), View.OnClickListener{
+class EsqueciSenhaFragment : Fragment(), View.OnClickListener {
 
     //Componentes de layout
-    private val binder : FragmentEsqueciSenhaBinding by lazy {
+    private val binder: FragmentEsqueciSenhaBinding by lazy {
         FragmentEsqueciSenhaBinding.inflate(layoutInflater)
     }
 
     //ViewModels
-    private val usuarioViewModel : UsuarioViewModel by viewModels {
+    private val usuarioViewModel: UsuarioViewModel by viewModels {
         UsuarioViewModelFactory((requireActivity().application as ChallengeApplication).usuarioRepo)
     }
 
     //NavController
     private lateinit var navController: NavController
 
-    private var emailPrevioDoUsuario : String? = null
+    //Só sera recuperado caso o usuário ja tenha digitado seu e-mail previamente.
+    private var emailPrevioDoUsuario: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,6 +53,9 @@ class EsqueciSenhaFragment : Fragment(), View.OnClickListener{
         recuperarEmailPrevioDoUsuario()
     }
 
+    /**
+     * Faz todas as operação necessárias para o funcionamento da UI do fragment.
+     */
     private fun init() {
 
         navController = Navigation.findNavController(binder.root)
@@ -60,8 +64,13 @@ class EsqueciSenhaFragment : Fragment(), View.OnClickListener{
 
     }
 
+    /**
+     * Se o usuario já tiver digitado seu email em uma caixa de texto prévia entrada deste fragment, ele será recuperado
+     * e automaticamente vinculado ao layout atual.
+     */
     private fun recuperarEmailPrevioDoUsuario() {
-        emailPrevioDoUsuario = arguments?.getString(getString(R.string.args_navigation_esqueci_senha))
+        emailPrevioDoUsuario =
+            arguments?.getString(getString(R.string.args_navigation_esqueci_senha))
 
         emailPrevioDoUsuario?.let {
             binder.fragmentEsqueciSenhaEditEmail.setText(it)
@@ -69,12 +78,16 @@ class EsqueciSenhaFragment : Fragment(), View.OnClickListener{
 
     }
 
+    /**
+     * Inicia o processo de envio de email de reset de senha do usuário.
+     */
     private suspend fun enviarEmail() {
 
         val email = binder.fragmentEsqueciSenhaEditEmail.text.toString()
 
         if (!email.matches(Patterns.EMAIL_ADDRESS.toRegex())) {
-            binder.fragmentEsqueciSenhaInputLayoutEmail.error = getString(R.string.edit_text_erro_email_invalido)
+            binder.fragmentEsqueciSenhaInputLayoutEmail.error =
+                getString(R.string.edit_text_erro_email_invalido)
             return
         }
 
@@ -94,7 +107,13 @@ class EsqueciSenhaFragment : Fragment(), View.OnClickListener{
         }
     }
 
-    private fun setEstadoDeCarregamentoDoLayout(carregando : Boolean) {
+    /**
+     * Define o estado atual do layout para carregando ou não carregando. Só sera colocado em estado de não carregando quando há uma falha no
+     * processo do backend.
+     *
+     * @param um boolean que controla o estado de carregamento do layout.
+     */
+    private fun setEstadoDeCarregamentoDoLayout(carregando: Boolean) {
 
         binder.fragmentEsqueciSenhaBtnEnviarEmail.isVisible = !carregando
         binder.fragmentEsqueciSenhaProgressEnviandoEmail.isVisible = carregando
@@ -103,7 +122,7 @@ class EsqueciSenhaFragment : Fragment(), View.OnClickListener{
 
     override fun onClick(p0: View?) {
 
-        when(p0?.id) {
+        when (p0?.id) {
 
             binder.fragmentEsqueciSenhaBtnEnviarEmail.id -> {
 

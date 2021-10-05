@@ -48,11 +48,17 @@ class BtmNavHostFragment : Fragment() {
 
     }
 
+    /**
+     * Instancia um navController para realizar navegação pelo bottomNav;
+     */
     private fun inicialNavController() {
         val navHostFragment = childFragmentManager.findFragmentById(binder.fragmentMainNavHostFragmentContainer.id) as NavHostFragment
         navController = navHostFragment.navController
     }
 
+    /**
+     * Controla toda a lógica de navegação do BottomNavView.
+     */
     private fun iniciarBtmNavNavigation() {
 
         binder.fragmentMainNavHostBtmNavigation.setNavigationChangeListener { view, position ->
@@ -68,6 +74,11 @@ class BtmNavHostFragment : Fragment() {
         }
     }
 
+    /**
+     * Navega diretamente para o fragment com o dado parâmetro.
+     *
+     * @param resId id da action da navegação.
+     */
     private fun navegarParaItem(@IdRes resId:Int ){
         navController.popBackStack()
         navController.navigate(resId)
