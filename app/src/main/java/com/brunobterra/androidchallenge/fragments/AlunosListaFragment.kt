@@ -22,6 +22,7 @@ import com.brunobterra.androidchallenge.databinding.FragmentAlunosListaBinding
 import com.brunobterra.androidchallenge.model.Aluno
 import com.brunobterra.androidchallenge.repository.AlunoQuery
 import com.brunobterra.androidchallenge.repository.AlunoQueryBuilder
+import com.brunobterra.androidchallenge.utils.AlunosNavigationUtils
 import com.brunobterra.androidchallenge.viewmodel.AlunoViewModel
 import com.brunobterra.androidchallenge.viewmodel.AlunoViewModelFactory
 import com.brunobterra.androidchallenge.viewmodel.SharedAlunoViewModel
@@ -53,6 +54,7 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
 
     //Navigation
     lateinit var navController: NavController
+    lateinit var alunosNavigationUtils: AlunosNavigationUtils
 
     //Firestore query
     private val alunoQueryBuilder = AlunoQueryBuilder()
@@ -86,6 +88,7 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
      */
     private fun init() {
         navController = Navigation.findNavController(binder.root)
+        alunosNavigationUtils = AlunosNavigationUtils(navController)
 
         binder.fragmentAlunosListaFabAdicionar.setOnClickListener(this)
         binder.fragmentAlunosListaContentPesquisar.contentPesquisarAlunosImageFechar.setOnClickListener(
@@ -128,7 +131,7 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
      */
     private fun iniciarFragmentDeEdicaoDeAluno(aluno: Aluno) {
         sharedAlunoViewModel.setAlunoEdicao(aluno)
-        navController.navigate(R.id.action_alunosListaFragment_to_alunosAdicionarFragment)
+        alunosNavigationUtils.navegarParaCriadAlunosFragment()
     }
 
     /**
@@ -297,7 +300,7 @@ class AlunosListaFragment : Fragment(), View.OnClickListener {
         when (p0?.id) {
 
             binder.fragmentAlunosListaFabAdicionar.id -> {
-                navController.navigate(R.id.action_alunosListaFragment_to_alunosAdicionarFragment)
+                alunosNavigationUtils.navegarParaCriadAlunosFragment()
             }
 
             binder.fragmentAlunosListaContentPesquisar.contentPesquisarAlunosImageFechar.id -> {
