@@ -6,7 +6,7 @@ import com.brunobterra.androidchallenge.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    //Layout components
+    //Componentes de layout
     private val binder by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }

@@ -33,14 +33,15 @@
     <string name="toast_salvar_crianca_preencha_nome">Informe o nome da criança</string>
     <string name="toast_salvar_crianca_politica_privacidade">Confirme com a política de privacidade</string>
     <string name="toast_algo_deu_errado">Ops! Algo deu errado. Tente novamente</string>
-    <string name="args_navigation_forgot_password">args_navigation_forgot_password</string>
+    <string name="args_navigation_esqueci_senha">args_navigation_esqueci_senha</string>
     <string name="toast_update_nao_trocou_avatar">Você ainda não trocou seu avatar!</string>
-    <string name="label_forgot_password">Esqueceu a senha?</string>
-    <string name="label_forgot_password_message">Insira o e-mail cadastrado que enviamos um link para cria uma nova senha</string>
+    <string name="label_esqueci_senha">Esqueceu a senha?</string>
+    <string name="label_mensagem_esqueci_senha">Insira o e-mail cadastrado que enviamos um link para cria uma nova senha</string>
     <string name="hint_label_email">E-mail</string>
-    <string name="btn_label_send_email">Enviar e-mail</string>
-    <string name="edit_text_error_invalid_email">Insira um e-mail válido</string>
-    <string name="toast_check_your_email">Enviado! Verifique seu e-mail</string>
-    <string name="cd_reset_email_header">Resetar senha</string>
-    <string name="label_no_search_results">Nenhum resultado para a busca</string>
+    <string name="btn_label_enviar_email">Enviar e-mail</string>
+    <string name="edit_text_erro_email_invalido">Insira um e-mail válido</string>
+    <string name="toast_cheque_seu_email">Enviado! Verifique seu e-mail</string>
+    <string name="cd_resetar_senha_header">Resetar senha</string>
+    <string name="label_sem_resultados_de_pesquisa">Nenhum resultado para a busca</string>
+    <string name="edit_text_error_campo_obrigatorio">Campo obrigatório</string>
 </resources>

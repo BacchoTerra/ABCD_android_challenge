@@ -1,7 +1,6 @@
 package com.brunobterra.androidchallenge.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,16 +10,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.navGraphViewModels
 import com.brunobterra.androidchallenge.R
 import com.brunobterra.androidchallenge.application.ChallengeApplication
 import com.brunobterra.androidchallenge.databinding.FragmentAlunosAdicionarBinding
-import com.brunobterra.androidchallenge.model.Crianca
+import com.brunobterra.androidchallenge.model.Aluno
 import com.brunobterra.androidchallenge.utils.shortToast
-import com.brunobterra.androidchallenge.viewmodel.CriancaViewModel
-import com.brunobterra.androidchallenge.viewmodel.CriancaViewModelFactory
+import com.brunobterra.androidchallenge.viewmodel.AlunoViewModel
+import com.brunobterra.androidchallenge.viewmodel.AlunoViewModelFactory
 import com.brunobterra.androidchallenge.viewmodel.SharedAlunoViewModel
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.flow.collectLatest
@@ -29,19 +25,19 @@ import kotlinx.coroutines.launch
 
 class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
 
-    //layout components
+    //Componentes de layout
     private val binder by lazy {
         FragmentAlunosAdicionarBinding.inflate(layoutInflater)
     }
 
     //ViewModel
-    private val criancaViewModel: CriancaViewModel by viewModels {
-        CriancaViewModelFactory((requireActivity().application as ChallengeApplication).criancaRepo)
+    private val alunoViewModel: AlunoViewModel by viewModels {
+        AlunoViewModelFactory((requireActivity().application as ChallengeApplication).alunoRepo)
     }
     private val sharedAlunoViewModel: SharedAlunoViewModel by activityViewModels()
 
     //Lista de avatares
-    val avataresList = listOf<Int>(
+    val listaDeAvatares = listOf<Int>(
         R.drawable.avatar_juju,
         R.drawable.avatar_magi,
         R.drawable.avatar_nina,
@@ -50,11 +46,11 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
         R.drawable.avatar_zig
     )
     var posAvatarAtual = 0
-    var avatarAtual = avataresList[posAvatarAtual]
+    var avatarAtual = listaDeAvatares[posAvatarAtual]
 
     //Objeto de aluno para edição
-    private var alunoEdicao: Crianca? = null
-    private var hasEditingAlunoChangedAvatar = false
+    private var alunoEmEdicao: Aluno? = null
+    private var trocouOAvatarDoAlunoEmEdicao = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,30 +67,28 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
 
     private fun init() {
 
-        binder.fragmentAlunosAdicionarContentCustomToolbar.contentAdicionarAlunoCustomToolbarImageBack.setOnClickListener(
-            this
-        )
+        binder.fragmentAlunosAdicionarContentCustomToolbar.contentAdicionarAlunoCustomToolbarImageVoltar.setOnClickListener(this)
         binder.fragmentAlunosAdicionarBtnMudarAvatar.setOnClickListener(this)
         binder.fragmentAlunosAdicionarBtnSalvar.setOnClickListener(this)
 
         Glide.with(requireActivity()).load(avatarAtual)
             .into(binder.fragmentAlunosAdicionarImageAvatar)
 
-        retrieveAlunoIfEditing()
+        recuperarAlunoEmEdicao()
 
     }
 
-    private fun retrieveAlunoIfEditing() {
+    private fun recuperarAlunoEmEdicao() {
 
-        sharedAlunoViewModel.alunoDeEdicao.observe(viewLifecycleOwner) {
-            alunoEdicao = it
-            bindLayoutWithEditindAluno()
+        sharedAlunoViewModel.alunoEmEdicao.observe(viewLifecycleOwner) {
+            alunoEmEdicao = it
+            vincularLayoutComAlunoEmEdicao()
         }
     }
 
-    private fun bindLayoutWithEditindAluno() {
+    private fun vincularLayoutComAlunoEmEdicao() {
 
-        alunoEdicao?.let {
+        alunoEmEdicao?.let {
             binder.fragmentAlunosAdicionarEditNome.setText(it.nome)
             Glide.with(requireActivity()).load(it.avatarUrl)
                 .into(binder.fragmentAlunosAdicionarImageAvatar)
@@ -106,27 +100,27 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
 
     private fun mudarAvatar() {
 
-        posAvatarAtual = if (posAvatarAtual == avataresList.lastIndex) 0 else ++posAvatarAtual
-        avatarAtual = avataresList[posAvatarAtual]
+        posAvatarAtual = if (posAvatarAtual == listaDeAvatares.lastIndex) 0 else ++posAvatarAtual
+        avatarAtual = listaDeAvatares[posAvatarAtual]
         Glide.with(requireActivity()).load(avatarAtual)
             .into(binder.fragmentAlunosAdicionarImageAvatar)
 
-        alunoEdicao?.let {
-            hasEditingAlunoChangedAvatar = true
+        alunoEmEdicao?.let {
+            trocouOAvatarDoAlunoEmEdicao = true
         }
 
     }
 
-    private suspend fun salvarCrianca() {
+    private suspend fun salvarAluno() {
 
         val nome = binder.fragmentAlunosAdicionarEditNome.text.toString()
 
         val avatarDrawable = ContextCompat.getDrawable(requireActivity(), avatarAtual)!!
-        val crianca = Crianca(nome)
+        val aluno = Aluno(nome)
 
         setLayoutCarregando(true)
 
-        criancaViewModel.salvarCrianca(crianca, avatarDrawable)
+        alunoViewModel.salvarAluno(aluno, avatarDrawable)
             .collectLatest { exception: Exception? ->
 
                 exception?.let {
@@ -137,24 +131,24 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
 
                 }
 
-                sharedAlunoViewModel.setHasToUpdateList(true)
+                sharedAlunoViewModel.setDeveAtualizarDados(true)
                 navegarUp()
 
             }
     }
 
-    private suspend fun updateCrianca() {
+    private suspend fun updateAluno() {
 
         val newAvatar = ContextCompat.getDrawable(requireContext(), avatarAtual)!!
 
         setLayoutCarregando(true)
-        criancaViewModel.updateCrianca(alunoEdicao!!.docId, newAvatar).collectLatest { exception ->
+        alunoViewModel.updateAluno(alunoEmEdicao!!.docId, newAvatar).collectLatest { exception ->
 
             exception?.let {
                 setLayoutCarregando(false)
                 shortToast(R.string.toast_algo_deu_errado)
             }
-            sharedAlunoViewModel.setHasToUpdateList(true)
+            sharedAlunoViewModel.setDeveAtualizarDados(true)
             navegarUp()
         }
 
@@ -164,12 +158,12 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
 
         binder.fragmentAlunosAdicionarProgressSalvando.isVisible = carregando
         binder.fragmentAlunosAdicionarBtnSalvar.isVisible = !carregando
-        binder.fragmentAlunosAdicionarContentCustomToolbar.contentAdicionarAlunoCustomToolbarImageBack.isEnabled =
+        binder.fragmentAlunosAdicionarContentCustomToolbar.contentAdicionarAlunoCustomToolbarImageVoltar.isEnabled =
             !carregando
 
     }
 
-    private fun podeSalvarCrianca(): Boolean {
+    private fun podeSalvarAluno(): Boolean {
 
         return if (binder.fragmentAlunosAdicionarEditNome.text.toString().isBlank()) {
             shortToast(R.string.toast_salvar_crianca_preencha_nome)
@@ -177,7 +171,7 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
         } else if (!binder.fragmentAlunosAdicionarCheckBoxAutorizacao.isChecked) {
             shortToast(R.string.toast_salvar_crianca_politica_privacidade)
             false
-        } else if(alunoEdicao != null && !hasEditingAlunoChangedAvatar){
+        } else if(alunoEmEdicao != null && !trocouOAvatarDoAlunoEmEdicao){
             shortToast(R.string.toast_update_nao_trocou_avatar)
             false
         }else {
@@ -198,19 +192,19 @@ class AlunosAdicionarFragment : Fragment(), View.OnClickListener {
     override fun onClick(p0: View?) {
         when (p0?.id) {
 
-            binder.fragmentAlunosAdicionarContentCustomToolbar.contentAdicionarAlunoCustomToolbarImageBack.id -> navegarUp()
+            binder.fragmentAlunosAdicionarContentCustomToolbar.contentAdicionarAlunoCustomToolbarImageVoltar.id -> navegarUp()
             binder.fragmentAlunosAdicionarBtnMudarAvatar.id -> mudarAvatar()
             binder.fragmentAlunosAdicionarBtnSalvar.id -> {
 
                 lifecycleScope.launch {
 
-                    if (!podeSalvarCrianca()) return@launch
+                    if (!podeSalvarAluno()) return@launch
 
-                    alunoEdicao?.let {
-                        updateCrianca()
+                    alunoEmEdicao?.let {
+                        updateAluno()
                         return@launch
                     }
-                    salvarCrianca()
+                    salvarAluno()
                 }
 
             }

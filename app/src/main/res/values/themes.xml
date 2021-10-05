@@ -48,7 +48,6 @@
 
     <style name="Theme.AndroidChallenge.TabTextAppearance" parent="ButtonTextAppearance"/>
 
-
     <style name="Theme.AndroidChallenge.OutlinedTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <item name="hintTextColor">@color/selector_text_input_layout_outlined</item>
@@ -91,16 +90,6 @@
         <item name="android:textColor">@color/text_main_color</item>
     </style>
 
-
-    <style name="Theme.AndroidChallenge.Toolbar" parent="Widget.AppCompat.Toolbar">
-
-        <item name="titleTextAppearance">@style/Theme.AndroidChallenge.HeaderText1</item>
-        <item name="colorControlNormal">#457</item>
-        <item name="android:background">@color/toolbar_background_color</item>
-        <item name="titleTextColor">@color/text_header_color</item>
-
-    </style>
-
     <style name="Theme.AndroidChallenge.CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
 
         <item name="android:textAppearance">@style/CheckBoxTextAppearance</item>
@@ -131,7 +120,7 @@
 
     </style>
 
-    <style name="Theme.AndroidChallenge.RowCriacas.TextNome" parent="TextAppearance.MaterialComponents.Body2">
+    <style name="Theme.AndroidChallenge.RowAlunos.TextNome" parent="TextAppearance.MaterialComponents.Body2">
 
         <item name="android:textColor">@color/text_main_color</item>
         <item name="fontFamily">@font/montserrat_extra_bold</item>
@@ -141,7 +130,7 @@
 
     </style>
 
-    <style name="Theme.AndroidChallenge.RowCriacas.TextAno" parent="TextAppearance.MaterialComponents.Caption">
+    <style name="Theme.AndroidChallenge.RowAlunos.TextAno" parent="TextAppearance.MaterialComponents.Caption">
 
         <item name="android:textColor">@color/text_main_color</item>
         <item name="fontFamily">@font/montserrat</item>

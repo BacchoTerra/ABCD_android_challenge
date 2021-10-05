@@ -1,6 +1,6 @@
 package com.brunobterra.androidchallenge.model
 
-data class Crianca(
+data class Aluno(
     val nome: String = "Bruno",
     val nomeDePesquisa: String = nome.lowercase(),
     val ano: Int = 1,

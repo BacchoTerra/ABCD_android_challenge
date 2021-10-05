@@ -13,7 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.brunobterra.androidchallenge.R
 import com.brunobterra.androidchallenge.application.ChallengeApplication
-import com.brunobterra.androidchallenge.databinding.FragmentForgotPasswordBinding
+import com.brunobterra.androidchallenge.databinding.FragmentEsqueciSenhaBinding
 import com.brunobterra.androidchallenge.utils.shortToast
 import com.brunobterra.androidchallenge.viewmodel.UsuarioViewModel
 import com.brunobterra.androidchallenge.viewmodel.UsuarioViewModelFactory
@@ -21,11 +21,11 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class ForgotPasswordFragment : Fragment(), View.OnClickListener{
+class EsqueciSenhaFragment : Fragment(), View.OnClickListener{
 
-    //layout components
-    private val binder : FragmentForgotPasswordBinding by lazy {
-        FragmentForgotPasswordBinding.inflate(layoutInflater)
+    //Componentes de layout
+    private val binder : FragmentEsqueciSenhaBinding by lazy {
+        FragmentEsqueciSenhaBinding.inflate(layoutInflater)
     }
 
     //ViewModels
@@ -36,7 +36,7 @@ class ForgotPasswordFragment : Fragment(), View.OnClickListener{
     //NavController
     private lateinit var navController: NavController
 
-    private var initialUserEmail : String? = null
+    private var emailPrevioDoUsuario : String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,55 +49,55 @@ class ForgotPasswordFragment : Fragment(), View.OnClickListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        retrieveInitialUserEmail()
+        recuperarEmailPrevioDoUsuario()
     }
 
     private fun init() {
 
         navController = Navigation.findNavController(binder.root)
 
-        binder.fragmentForgotPasswordBtnSendEmail.setOnClickListener(this)
+        binder.fragmentEsqueciSenhaBtnEnviarEmail.setOnClickListener(this)
 
     }
 
-    private fun retrieveInitialUserEmail() {
-        initialUserEmail = arguments?.getString(getString(R.string.args_navigation_forgot_password))
+    private fun recuperarEmailPrevioDoUsuario() {
+        emailPrevioDoUsuario = arguments?.getString(getString(R.string.args_navigation_esqueci_senha))
 
-        initialUserEmail?.let {
-            binder.fragmentForgotPasswordEditEmail.setText(it)
+        emailPrevioDoUsuario?.let {
+            binder.fragmentEsqueciSenhaEditEmail.setText(it)
         }
 
     }
 
-    private suspend fun sendEmail() {
+    private suspend fun enviarEmail() {
 
-        val email = binder.fragmentForgotPasswordEditEmail.text.toString()
+        val email = binder.fragmentEsqueciSenhaEditEmail.text.toString()
 
         if (!email.matches(Patterns.EMAIL_ADDRESS.toRegex())) {
-            binder.fragmentForgotPasswordInputLayoutEmail.error = getString(R.string.edit_text_error_invalid_email)
+            binder.fragmentEsqueciSenhaInputLayoutEmail.error = getString(R.string.edit_text_erro_email_invalido)
             return
         }
 
-        setLayoutToLoadState(true)
+        setEstadoDeCarregamentoDoLayout(true)
 
-        usuarioViewModel.sendPasswordResetEmail(email).collectLatest {exception: Exception? ->
+        usuarioViewModel.enviarEmailDeResetDeSenha(email).collectLatest { exception: Exception? ->
 
             exception?.let {
                 shortToast(R.string.toast_algo_deu_errado)
-                setLayoutToLoadState(false)
+                setEstadoDeCarregamentoDoLayout(false)
                 return@collectLatest
             }
 
-            shortToast(R.string.toast_check_your_email)
+            shortToast(R.string.toast_cheque_seu_email)
             requireActivity().onBackPressed()
 
         }
     }
 
-    private fun setLayoutToLoadState(isLoading : Boolean) {
+    private fun setEstadoDeCarregamentoDoLayout(carregando : Boolean) {
 
-        binder.fragmentForgotPasswordBtnSendEmail.isVisible = !isLoading
-        binder.fragmentForgotPasswordProgressSendingEmail.isVisible = isLoading
+        binder.fragmentEsqueciSenhaBtnEnviarEmail.isVisible = !carregando
+        binder.fragmentEsqueciSenhaProgressEnviandoEmail.isVisible = carregando
 
     }
 
@@ -105,10 +105,10 @@ class ForgotPasswordFragment : Fragment(), View.OnClickListener{
 
         when(p0?.id) {
 
-            binder.fragmentForgotPasswordBtnSendEmail.id -> {
+            binder.fragmentEsqueciSenhaBtnEnviarEmail.id -> {
 
                 lifecycleScope.launch {
-                    sendEmail()
+                    enviarEmail()
                 }
             }
 

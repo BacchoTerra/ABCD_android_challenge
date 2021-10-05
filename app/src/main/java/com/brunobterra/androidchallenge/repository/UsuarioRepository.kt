@@ -68,7 +68,7 @@ class UsuarioRepository {
 
     }
 
-    suspend fun sendPasswordResetEmail(email:String) : Exception?{
+    suspend fun enviarEmailDeResetarSenha(email:String) : Exception?{
         return try {
             mAuth.sendPasswordResetEmail(email).await()
             null

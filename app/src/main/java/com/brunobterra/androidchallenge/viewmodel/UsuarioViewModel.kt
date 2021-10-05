@@ -18,8 +18,8 @@ class UsuarioViewModel(val repo: UsuarioRepository) : ViewModel() {
         emit(repo.registrarUsuario(email, senha))
     }
 
-    fun sendPasswordResetEmail(email: String) =
-        flow<Exception?> { emit(repo.sendPasswordResetEmail(email)) }
+    fun enviarEmailDeResetDeSenha(email: String) =
+        flow<Exception?> { emit(repo.enviarEmailDeResetarSenha(email)) }
 
 
 }

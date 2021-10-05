@@ -26,11 +26,11 @@
         tools:layout="@layout/fragment_btm_nav_host" />
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.brunobterra.androidchallenge.fragments.ForgotPasswordFragment"
+        android:name="com.brunobterra.androidchallenge.fragments.EsqueciSenhaFragment"
         android:label="fragment_forgot_password"
-        tools:layout="@layout/fragment_forgot_password" >
+        tools:layout="@layout/fragment_esqueci_senha" >
         <argument
-            android:name="@string/args_navigation_forgot_password"
+            android:name="@string/args_navigation_esqueci_senha"
             app:argType="string" />
     </fragment>
 </navigation>

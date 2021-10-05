@@ -2,20 +2,20 @@ package com.brunobterra.androidchallenge.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.brunobterra.androidchallenge.model.Crianca
+import com.brunobterra.androidchallenge.model.Aluno
 
 class SharedAlunoViewModel : ViewModel() {
 
-    val alunoDeEdicao = MutableLiveData<Crianca?>()
+    val alunoEmEdicao = MutableLiveData<Aluno?>()
 
-    val updateList = MutableLiveData<Boolean>(false)
+    val deveAtualizarDados = MutableLiveData<Boolean>(false)
 
-    fun setAlunoEdicao(crianca: Crianca?){
-        alunoDeEdicao.value = crianca
+    fun setAlunoEdicao(aluno: Aluno?){
+        alunoEmEdicao.value = aluno
     }
 
-    fun setHasToUpdateList(hasToUpdateList : Boolean){
-        updateList.value = hasToUpdateList
+    fun setDeveAtualizarDados(deveAtualizar : Boolean){
+        deveAtualizarDados.value = deveAtualizar
     }
 
 }

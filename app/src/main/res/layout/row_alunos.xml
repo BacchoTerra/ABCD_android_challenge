@@ -6,9 +6,9 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:layout_marginHorizontal="@dimen/alunos_recycler_horizontal_margin"
-    android:background="@drawable/shape_row_crianca_background"
     android:layout_marginTop="20dp"
-    android:layout_marginBottom="11dp">
+    android:layout_marginBottom="11dp"
+    android:background="@drawable/shape_row_crianca_background">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
 
 
             <ImageView
-                android:id="@+id/row_crianca_imageAvatar"
+                android:id="@+id/row_alunos_imageAvatar"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginStart="11dp"
@@ -40,8 +40,8 @@
                 app:srcCompat="@drawable/avatar_juju" />
 
             <TextView
-                android:id="@+id/row_crianca_txtNome"
-                style="@style/Theme.AndroidChallenge.RowCriacas.TextNome"
+                android:id="@+id/row_alunos_txtNome"
+                style="@style/Theme.AndroidChallenge.RowAlunos.TextNome"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="1dp"
@@ -52,20 +52,20 @@
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/row_crianca_imageAvatar"
-                app:layout_constraintTop_toBottomOf="@+id/row_crianca_imageAvatar"
+                app:layout_constraintStart_toStartOf="@+id/row_alunos_imageAvatar"
+                app:layout_constraintTop_toBottomOf="@+id/row_alunos_imageAvatar"
                 tools:text="Bruno baccho erra" />
 
             <TextView
-                android:id="@+id/row_crianca_txtAno"
-                style="@style/Theme.AndroidChallenge.RowCriacas.TextAno"
+                android:id="@+id/row_alunos_txtAno"
+                style="@style/Theme.AndroidChallenge.RowAlunos.TextAno"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="14dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/row_crianca_txtNome"
-                app:layout_constraintTop_toBottomOf="@+id/row_crianca_txtNome"
+                app:layout_constraintStart_toStartOf="@+id/row_alunos_txtNome"
+                app:layout_constraintTop_toBottomOf="@+id/row_alunos_txtNome"
                 tools:text="1 ano" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

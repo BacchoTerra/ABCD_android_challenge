@@ -80,10 +80,8 @@ class LoginFragment : Fragment(), View.OnClickListener{
         val email = binder.fragmentLoginEditEmail.text.toString()
         val senha = binder.fragmentLoginEditSenha.text.toString()
 
-        if (!dadosSaoValidos(email,senha)) {
-            shortToast(R.string.toast_login_preencha_dados)
-            return
-        }
+        if (!dadosSaoValidos(email,senha)) return
+
 
         lifecycleScope.launch(Dispatchers.IO) {
 
@@ -116,8 +114,19 @@ class LoginFragment : Fragment(), View.OnClickListener{
      */
     private fun dadosSaoValidos(email:String,senha:String) : Boolean{
 
-        return email.isNotBlank() && senha.isNotBlank()
+        if (email.isNotBlank() && senha.isNotBlank())
+            return true
 
+
+        if (email.isBlank()) {
+            binder.fragmentLoginInputLayoutEmail.error = getString(R.string.edit_text_error_campo_obrigatorio)
+        }
+
+        if (senha.isBlank()) {
+            binder.fragmentLoginInputLayoutSenha.error = getString(R.string.edit_text_error_campo_obrigatorio)
+        }
+
+        return false
     }
 
     /**
@@ -164,12 +173,12 @@ class LoginFragment : Fragment(), View.OnClickListener{
         }
     }
 
-    private fun forgotPassword() {
+    private fun esqueceuSenha() {
 
-        val initialEmail = binder.fragmentLoginEditEmail.text.toString()
+        val emailParcial = binder.fragmentLoginEditEmail.text.toString()
 
         navController.navigate(R.id.action_loginFragment_to_forgotPasswordFragment,
-        bundleOf(getString(R.string.args_navigation_forgot_password) to initialEmail))
+        bundleOf(getString(R.string.args_navigation_esqueci_senha) to emailParcial))
 
     }
 
@@ -189,7 +198,7 @@ class LoginFragment : Fragment(), View.OnClickListener{
         when(p0?.id) {
 
             binder.fragmentLoginBtnLogin.id -> login()
-            binder.fragmentLoginBtnEsqueciSenha.id -> forgotPassword()
+            binder.fragmentLoginBtnEsqueciSenha.id -> esqueceuSenha()
 
         }
 
