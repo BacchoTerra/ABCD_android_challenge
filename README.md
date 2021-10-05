@@ -1,6 +1,6 @@
 # ABCD_android_challenge
 Projeto de desafio da instituição ABCD. Este projeto é um simples aplicativo que utiliza Firebase para armazenamento de dados e autenticação.
-O aplicativo foi desenvolvido utilizando a arquitetura MVVM (with repository) para abstrair o codigo e garantir um código mais limpo.
+O aplicativo foi desenvolvido utilizando a arquitetura MVVM (with repository) para garantir uma maior abstração e garantir um código mais limpo.
 
 
 ## O que foi utilizdo no projeto?
@@ -17,4 +17,4 @@ Entre outras bibliotecas como Glide, Lottie, Firestore, CloudStorage, e Firebase
 
 
 ## Setup
-Esse projeto é totalmente open source e não requer nenhum passo adicional além simplesmente clonar o projeto :)
+Esse projeto é totalmente open source e não requer nenhum passo adicional além de simplesmente clonar o projeto :)
