@@ -44,4 +44,8 @@
     <string name="cd_resetar_senha_header">Resetar senha</string>
     <string name="label_sem_resultados_de_pesquisa">Nenhum resultado para a busca</string>
     <string name="edit_text_error_campo_obrigatorio">Campo obrigatório</string>
+    <string name="label_config">Configurações</string>
+    <string name="label_ajuda">Ajuda</string>
+    <string name="label_bem_vindo">Bem vindo!</string>
+    <string name="label_bem_vindo_mensagem">Agora que voce está logado você pode utilizar o app o quanto quiser ;)</string>
 </resources>
